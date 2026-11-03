@@ -53,115 +53,157 @@ hr{border:0;border-top:1px solid #e7edf5;margin:20px 0}
 </head>
 <body>
 <div id="login">
-  <h1>Shorts Maker</h1>
-  <p>관리자 전용 숏츠 제작 스튜디오</p>
-  <button class="primary" onclick="loginWithGoogle()">Google 로그인</button>
-  <p id="loginStatus"></p>
+<h1>Shorts Maker</h1>
+<p>관리자 전용 숏츠 제작 스튜디오</p>
+<button class="primary" onclick="loginWithGoogle()">Google 로그인</button>
+<p id="loginStatus"></p>
 </div>
 
 <main id="app">
-  <h1>Shorts Maker</h1>
-  <p id="user"></p>
-  <button onclick="logout()">로그아웃</button>
+<h1>Shorts Maker</h1>
+<p id="user"></p>
+<button onclick="logout()">로그아웃</button>
 
-  <section class="panel">
-    <h2>1. 영상 제목과 대본</h2>
-    <div class="field">
-      <label>고정 큰 제목 (영상 전체에서 유지)</label>
-      <input id="mainTitle" type="text" value="사라진 시간들" placeholder="예: 사라진 배의 미스터리" oninput="drawCurrent()">
-      <p class="small">여기에 입력한 제목은 모든 장면에서 동일하게 표시돼.</p>
-    </div>
-    <textarea id="script" placeholder="숏츠 대본을 붙여넣어. 문장별로 작은 설명 자막을 나눠줄게."></textarea>
-    <p class="toolbar">
-      <button class="primary" onclick="makeScenes()">장면 자동 분리</button>
-      <button onclick="clearScenes()">초기화</button>
-    </p>
-  </section>
+<section class="panel">
+<h2>1. 영상 제목과 대본</h2>
+<div class="field">
+<label>고정 큰 제목 (영상 전체에서 유지)</label>
+<input id="mainTitle" type="text" value="사라진 시간들" placeholder="예: 사라진 배의 미스터리" oninput="drawCurrent()">
+<p class="small">여기에 입력한 제목은 모든 장면에서 동일하게 표시돼.</p>
+</div>
+<textarea id="script" placeholder="숏츠 대본을 붙여넣어. 문장별로 작은 설명 자막을 나눠줄게."></textarea>
+<p class="toolbar">
+<button class="primary" onclick="makeScenes()">장면 자동 분리</button>
+<button onclick="clearScenes()">초기화</button>
+</p>
+</section>
 
-  <section class="panel">
-    <h2>2. 폰트 설정</h2>
-    <p class="small">폰트를 업로드하면 이 브라우저에 저장돼.</p>
-    <div class="field">
-      <label>폰트 파일 업로드</label>
-      <input id="fontUpload" type="file" accept=".ttf,.otf,.woff,.woff2">
-    </div>
-    <div class="grid">
-      <div class="field"><label>큰 제목 폰트</label><select id="titleFont" onchange="drawCurrent()"><option value="Pretendard">Pretendard</option></select></div>
-      <div class="field"><label>설명 자막 폰트</label><select id="captionFont" onchange="drawCurrent()"><option value="Pretendard">Pretendard</option></select></div>
-    </div>
-    <div id="fontList" class="font-list"></div>
-    <button onclick="loadSavedFonts()">저장된 폰트 불러오기</button>
-  </section>
+<section class="panel">
+<h2>2. 폰트 설정</h2>
+<p class="small">폰트를 업로드하면 이 브라우저에 저장돼.</p>
+<div class="field">
+<label>폰트 파일 업로드</label>
+<input id="fontUpload" type="file" accept=".ttf,.otf,.woff,.woff2">
+</div>
+<div class="grid">
+<div class="field"><label>큰 제목 폰트</label><select id="titleFont" onchange="drawCurrent()"><option value="Pretendard">Pretendard</option></select></div>
+<div class="field"><label>설명 자막 폰트</label><select id="captionFont" onchange="drawCurrent()"><option value="Pretendard">Pretendard</option></select></div>
+</div>
+<div id="fontList" class="font-list"></div>
+<button onclick="loadSavedFonts()">저장된 폰트 불러오기</button>
+</section>
 
-  <section class="panel">
-    <h2>3. 음성 TTS</h2>
-    <p class="small">API 키 없이 브라우저에 설치된 음성으로 읽어줘. 음성 종류는 컴퓨터와 브라우저에 따라 달라질 수 있어.</p>
-    <div class="field"><label>목소리 선택</label><select id="voiceSelect"></select></div>
-    <div class="grid">
-      <div class="field"><label>말하기 속도 <span id="rateValue">1</span></label><input id="rate" type="range" min=".7" max="1.3" step=".05" value="1" oninput="rateValue.textContent=this.value"></div>
-      <div class="field"><label>음높이 <span id="pitchValue">1</span></label><input id="pitch" type="range" min=".7" max="1.3" step=".05" value="1" oninput="pitchValue.textContent=this.value"></div>
-    </div>
-    <div class="toolbar">
-      <button class="primary" onclick="speakCurrent()">현재 장면 듣기</button>
-      <button onclick="speakAll()">전체 대본 듣기</button>
-      <button onclick="stopSpeech()">음성 정지</button>
-    </div>
-    <p id="ttsStatus" class="small"></p>
-  </section>
+<section class="panel">
+<h2>3. 음성 TTS</h2>
+<p class="small">API 키 없이 브라우저에 설치된 음성으로 읽어줘. 음성 종류는 컴퓨터와 브라우저에 따라 달라질 수 있어.</p>
+<div class="field"><label>목소리 선택</label><select id="voiceSelect"></select></div>
+<div class="grid">
+<div class="field"><label>말하기 속도 <span id="rateValue">1</span></label><input id="rate" type="range" min=".7" max="1.3" step=".05" value="1" oninput="rateValue.textContent=this.value"></div>
+<div class="field"><label>음높이 <span id="pitchValue">1</span></label><input id="pitch" type="range" min=".7" max="1.3" step=".05" value="1" oninput="pitchValue.textContent=this.value"></div>
+</div>
+<div class="toolbar">
+<button class="primary" onclick="speakCurrent()">현재 장면 듣기</button>
+<button onclick="speakAll()">전체 대본 듣기</button>
+<button onclick="stopSpeech()">음성 정지</button>
+</div>
+<p id="ttsStatus" class="small"></p>
+</section>
 
-  <section>
-    <h2>4. 장면 편집</h2>
-    <p class="small">큰 제목은 고정돼. 아래에서 장면별 작은 설명, 강조색, 이미지를 수정할 수 있어.</p>
-    <div id="scenes" class="grid" style="grid-template-columns:1fr"></div>
-  </section>
+<section>
+<h2>4. 장면 편집</h2>
+<p class="small">큰 제목은 고정돼. 아래에서 장면별 작은 설명, 강조색, 이미지를 수정할 수 있어.</p>
+<div id="scenes" class="grid" style="grid-template-columns:1fr"></div>
+</section>
 
-  <section class="panel">
-    <h2>5. 영상 디자인</h2>
-    <div class="grid">
-      <div class="field"><label>큰 제목 글자 크기 <span id="titleSizeValue">76</span>px</label><input id="titleSize" type="range" min="30" max="110" value="76" oninput="titleSizeValue.textContent=this.value;drawCurrent()"></div>
-      <div class="field"><label>설명 자막 크기 <span id="captionSizeValue">43</span>px</label><input id="captionSize" type="range" min="20" max="70" value="43" oninput="captionSizeValue.textContent=this.value;drawCurrent()"></div>
-      <div class="field"><label>제목 가로 위치 <span id="titleXValue">6</span>%</label><input id="titleX" type="range" min="0" max="90" value="6" oninput="titleXValue.textContent=this.value;drawCurrent()"></div>
-      <div class="field"><label>제목 세로 위치 <span id="titleYValue">8</span>%</label><input id="titleY" type="range" min="0" max="70" value="8" oninput="titleYValue.textContent=this.value;drawCurrent()"></div>
-      <div class="field"><label>설명 가로 위치 <span id="captionXValue">6</span>%</label><input id="captionX" type="range" min="0" max="90" value="6" oninput="captionXValue.textContent=this.value;drawCurrent()"></div>
-      <div class="field"><label>설명 세로 위치 <span id="captionYValue">58</span>%</label><input id="captionY" type="range" min="15" max="90" value="58" oninput="captionYValue.textContent=this.value;drawCurrent()"></div>
-      <div class="field"><label>장면당 영상 시간 (초)</label><input id="duration" type="number" min="2" max="15" value="4"></div>
-    </div>
-    <p class="small">미리보기에서 큰 제목이나 설명 자막을 마우스로 끌어 위치를 바꿀 수 있어.</p>
-    <div class="field">
-      <label>기본 강조색</label>
-      <div class="color-row">
-        <button class="color-option selected" style="background:#65D9E8" data-color="#65D9E8" onclick="setDefaultColor(this)"></button>
-        <button class="color-option" style="background:#FF526B" data-color="#FF526B" onclick="setDefaultColor(this)"></button>
-        <button class="color-option" style="background:#B7A7FF" data-color="#B7A7FF" onclick="setDefaultColor(this)"></button>
-        <button class="color-option" style="background:#FFFFFF" data-color="#FFFFFF" onclick="setDefaultColor(this)"></button>
-      </div>
-    </div>
-    <button onclick="resetLayout()">위치 기본값으로</button>
-  </section>
+<section class="panel">
+<h2>5. 영상 디자인</h2>
+<div class="grid">
+<div class="field"><label>큰 제목 글자 크기 <span id="titleSizeValue">76</span>px</label><input id="titleSize" type="range" min="30" max="110" value="76" oninput="titleSizeValue.textContent=this.value;drawCurrent()"></div>
+<div class="field"><label>설명 자막 크기 <span id="captionSizeValue">43</span>px</label><input id="captionSize" type="range" min="20" max="70" value="43" oninput="captionSizeValue.textContent=this.value;drawCurrent()"></div>
+<div class="field"><label>제목 가로 위치 <span id="titleXValue">6</span>%</label><input id="titleX" type="range" min="0" max="90" value="6" oninput="titleXValue.textContent=this.value;drawCurrent()"></div>
+<div class="field"><label>제목 세로 위치 <span id="titleYValue">8</span>%</label><input id="titleY" type="range" min="0" max="70" value="8" oninput="titleYValue.textContent=this.value;drawCurrent()"></div>
+<div class="field"><label>설명 가로 위치 <span id="captionXValue">6</span>%</label><input id="captionX" type="range" min="0" max="90" value="58" oninput="captionXValue.textContent=this.value;drawCurrent()"></div>
+<div class="field"><label>설명 세로 위치 <span id="captionYValue">58</span>%</label><input id="captionY" type="range" min="15" max="90" value="58" oninput="captionYValue.textContent=this.value;drawCurrent()"></div>
+<div class="field"><label>장면당 영상 시간 (초)</label><input id="duration" type="number" min="2" max="15" value="4"></div>
+</div>
+<p class="small">미리보기에서 제목과 자막을 끌어 위치를 바꿀 수 있어. 자막은 가로 폭에 맞춰 자동 줄바꿈돼.</p>
 
-  <section class="panel">
-    <h2>6. 영상 미리보기</h2>
-    <canvas id="canvas" width="720" height="1280"></canvas>
-    <p class="toolbar">
-      <button onclick="previousScene()">이전 장면</button>
-      <button onclick="nextScene()">다음 장면</button>
-      <button class="primary" onclick="renderVideo()">영상 만들기</button>
-    </p>
-    <p id="status">대본을 입력하고 장면을 만들어줘.</p>
-    <video id="video" controls hidden></video>
-    <p><a id="download" hidden>영상 다운로드</a></p>
-  </section>
+<div class="field">
+<label>기본 강조색</label>
+<div class="color-row">
+<button class="color-option selected" style="background:#65D9E8" data-color="#65D9E8" onclick="setDefaultColor(this)"></button>
+<button class="color-option" style="background:#FF526B" data-color="#FF526B" onclick="setDefaultColor(this)"></button>
+<button class="color-option" style="background:#B7A7FF" data-color="#B7A7FF" onclick="setDefaultColor(this)"></button>
+<button class="color-option" style="background:#FFFFFF" data-color="#FFFFFF" onclick="setDefaultColor(this)"></button>
+</div>
+</div>
+
+<hr>
+<h2>디자인 세부 규격</h2>
+<p class="small">제목과 설명 자막의 모양을 각각 설정해. 저장한 프리셋은 다음 영상에도 그대로 쓸 수 있어.</p>
+<div class="grid">
+<div class="field"><label>큰 제목 글자색</label><input id="titleTextColor" type="color" value="#FFFFFF"></div>
+<div class="field"><label>큰 제목 외곽선 색</label><input id="titleStrokeColor" type="color" value="#111111"></div>
+<div class="field"><label>큰 제목 외곽선 두께</label><input id="titleStroke" type="range" min="0" max="10" value="2"></div>
+<div class="field"><label>큰 제목 그림자</label><input id="titleShadow" type="range" min="0" max="30" value="10"></div>
+<div class="field"><label>큰 제목 정렬</label><select id="titleAlign"><option value="left">왼쪽</option><option value="center">가운데</option><option value="right">오른쪽</option></select></div>
+<div class="field"><label>설명 자막 글자색</label><input id="captionTextColor" type="color" value="#FFFFFF"></div>
+<div class="field"><label>설명 자막 외곽선 색</label><input id="captionStrokeColor" type="color" value="#111111"></div>
+<div class="field"><label>설명 자막 외곽선 두께</label><input id="captionStroke" type="range" min="0" max="10" value="3"></div>
+<div class="field"><label>설명 자막 그림자</label><input id="captionShadow" type="range" min="0" max="30" value="12"></div>
+<div class="field"><label>설명 자막 정렬</label><select id="captionAlign"><option value="left">왼쪽</option><option value="center" selected>가운데</option><option value="right">오른쪽</option></select></div>
+<div class="field"><label>자막 배경</label><select id="captionBox"><option value="none">없음</option><option value="solid">단색 배경</option><option value="soft">반투명 배경</option></select></div>
+<div class="field"><label>자막 배경색</label><input id="captionBoxColor" type="color" value="#111111"></div>
+<div class="field"><label>자막 배경 투명도</label><input id="captionBoxOpacity" type="range" min="10" max="100" value="72"></div>
+<div class="field"><label>자막 줄 간격</label><input id="captionLineHeight" type="range" min="100" max="180" value="135"></div>
+<div class="field"><label>자막 최대 가로 폭</label><input id="captionMaxWidth" type="range" min="50" max="96" value="88"></div>
+<div class="field"><label>제목 최대 가로 폭</label><input id="titleMaxWidth" type="range" min="50" max="96" value="88"></div>
+</div>
+<div class="toolbar">
+<button class="primary" onclick="saveDesignPreset()">현재 디자인 프리셋 저장</button>
+<select id="designPreset"><option value="">저장된 프리셋 선택</option></select>
+<button onclick="loadDesignPreset()">프리셋 적용</button>
+<button onclick="resetDesign()">디자인 초기화</button>
+</div>
+<button onclick="resetLayout()">위치 기본값으로</button>
+</section>
+
+<section class="panel">
+<h2>6. 영상 설명란 템플릿</h2>
+<p class="small">영상마다 설명란의 구조를 통일해. 내용만 바꾸고 복사해서 유튜브에 붙여넣으면 돼.</p>
+<div class="field"><label>영상 소개</label><textarea id="descriptionIntro" rows="3" placeholder="이번 영상에서 다루는 사건이나 인물을 간단히 소개해."></textarea></div>
+<div class="field"><label>출처 및 참고자료</label><textarea id="descriptionSources" rows="3" placeholder="자료 출처와 이미지 출처를 적어줘."></textarea></div>
+<div class="field"><label>고정 안내 문구</label><textarea id="descriptionFixed" rows="2">역사 속 사라진 사건과 인물, 오래된 이야기들을 기록합니다.
+구독과 좋아요는 다음 이야기를 만드는 데 도움이 됩니다.</textarea></div>
+<div class="field"><label>해시태그</label><input id="descriptionTags" value="#사라진시간들 #역사 #미스터리 #shorts"></div>
+<button class="primary" onclick="makeDescription()">설명란 만들기</button>
+<textarea id="descriptionOutput" rows="8" placeholder="완성된 설명란이 여기에 표시돼." readonly></textarea>
+<button onclick="copyDescription()">설명란 복사</button>
+</section>
+
+<section class="panel">
+<h2>7. 영상 미리보기</h2>
+<canvas id="canvas" width="720" height="1280"></canvas>
+<p class="toolbar">
+<button onclick="previousScene()">이전 장면</button>
+<button onclick="nextScene()">다음 장면</button>
+<button class="primary" onclick="renderVideo()">영상 만들기</button>
+</p>
+<p id="status">대본을 입력하고 장면을 만들어줘.</p>
+<video id="video" controls hidden></video>
+<p><a id="download" hidden>영상 다운로드</a></p>
+</section>
 </main>
 
 <script>
 const firebaseConfig={
-  apiKey:"AIzaSyAxknDZq8Cl4ADKvlg0pToWEFA6WY94H00",
-  authDomain:"making-shorts-577ce.firebaseapp.com",
-  projectId:"making-shorts-577ce",
-  storageBucket:"making-shorts-577ce.firebasestorage.app",
-  messagingSenderId:"952212878867",
-  appId:"1:952212878867:web:6490fb2ed9fff9d5df31e6",
-  measurementId:"G-5RJ81Y6TKP"
+apiKey:"AIzaSyAxknDZq8Cl4ADKvlg0pToWEFA6WY94H00",
+authDomain:"making-shorts-577ce.firebaseapp.com",
+projectId:"making-shorts-577ce",
+storageBucket:"making-shorts-577ce.firebasestorage.app",
+messagingSenderId:"952212878867",
+appId:"1:952212878867:web:6490fb2ed9fff9d5df31e6",
+measurementId:"G-5RJ81Y6TKP"
 };
 firebase.initializeApp(firebaseConfig);
 const auth=firebase.auth(),ADMIN_EMAIL="raizn199x@gmail.com";
@@ -172,12 +214,12 @@ let currentScene=0,defaultColor="#65D9E8",uploadedFonts=[],recorderActive=false,
 function loginWithGoogle(){auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>$("loginStatus").textContent="로그인 실패: "+e.message)}
 function logout(){auth.signOut()}
 auth.onAuthStateChanged(async user=>{
-  if(user&&user.email===ADMIN_EMAIL&&user.emailVerified){
-    $("login").style.display="none";$("app").style.display="block";$("user").textContent=user.email;loadVoices();loadSavedFonts();
-  }else{
-    $("app").style.display="none";$("login").style.display="block";
-    if(user){await auth.signOut();$("loginStatus").textContent="관리자 계정만 로그인할 수 있어."}
-  }
+if(user&&user.email===ADMIN_EMAIL&&user.emailVerified){
+$("login").style.display="none";$("app").style.display="block";$("user").textContent=user.email;loadVoices();loadSavedFonts();
+}else{
+$("app").style.display="none";$("login").style.display="block";
+if(user){await auth.signOut();$("loginStatus").textContent="관리자 계정만 로그인할 수 있어."}
+}
 });
 
 /* 폰트 저장 */
@@ -187,348 +229,357 @@ async function getFonts(){const db=await openFontDB();return new Promise((resolv
 async function deleteFont(name){const db=await openFontDB();return new Promise((resolve,reject)=>{const tx=db.transaction("fonts","readwrite");tx.objectStore("fonts").delete(name);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error)})}
 
 $("fontUpload").addEventListener("change",async e=>{
-  const file=e.target.files[0];if(!file)return;
-  const name=file.name.replace(/\.[^.]+$/,"").replace(/[^a-zA-Z0-9가-힣_-]/g,"_");
-  try{await saveFont(name,file);await loadSavedFonts();alert("폰트를 저장했어.")}catch(err){alert("폰트 저장 실패: "+err.message)}
-  e.target.value="";
+const file=e.target.files[0];if(!file)return;
+const name=file.name.replace(/\.[^.]+$/,"").replace(/[^a-zA-Z0-9가-힣_-]/g,"_");
+try{await saveFont(name,file);await loadSavedFonts();alert("폰트를 저장했어.")}catch(err){alert("폰트 저장 실패: "+err.message)}
+e.target.value="";
 });
 
 async function loadSavedFonts(){
-  try{
-    const fonts=await getFonts();uploadedFonts.forEach(f=>f.url&&URL.revokeObjectURL(f.url));uploadedFonts=[];
-    for(const item of fonts){
-      const url=URL.createObjectURL(item.blob);
-      const face=new FontFace(item.name,`url("${url}")`);
-      await face.load();document.fonts.add(face);uploadedFonts.push({name:item.name,url});
-    }
-    updateFontMenus();
-  }catch(e){console.error(e)}
+try{
+const fonts=await getFonts();uploadedFonts.forEach(f=>f.url&&URL.revokeObjectURL(f.url));uploadedFonts=[];
+for(const item of fonts){
+const url=URL.createObjectURL(item.blob);
+const face=new FontFace(item.name,`url("${url}")`);
+await face.load();document.fonts.add(face);uploadedFonts.push({name:item.name,url});
+}
+updateFontMenus();
+}catch(e){console.error(e)}
 }
 function updateFontMenus(){
-  ["titleFont","captionFont"].forEach(id=>{
-    const s=$(id),old=s.value;s.innerHTML="";
-    ["Pretendard",...uploadedFonts.map(f=>f.name)].forEach(name=>{
-      const o=document.createElement("option");o.value=name;o.textContent=name;s.appendChild(o);
-    });
-    if([...s.options].some(o=>o.value===old))s.value=old;
-  });
-  $("fontList").innerHTML="";
-  uploadedFonts.forEach(font=>{
-    const chip=document.createElement("span");chip.className="font-chip";chip.textContent=font.name+" ";
-    const del=document.createElement("button");del.textContent="삭제";
-    del.onclick=async()=>{await deleteFont(font.name);await loadSavedFonts()};
-    chip.appendChild(del);$("fontList").appendChild(chip);
-  });
-  drawCurrent();
+["titleFont","captionFont"].forEach(id=>{
+const s=$(id),old=s.value;s.innerHTML="";
+["Pretendard",...uploadedFonts.map(f=>f.name)].forEach(name=>{
+const o=document.createElement("option");o.value=name;o.textContent=name;s.appendChild(o);
+});
+if([...s.options].some(o=>o.value===old))s.value=old;
+});
+$("fontList").innerHTML="";
+uploadedFonts.forEach(font=>{
+const chip=document.createElement("span");chip.className="font-chip";chip.textContent=font.name+" ";
+const del=document.createElement("button");del.textContent="삭제";
+del.onclick=async()=>{await deleteFont(font.name);await loadSavedFonts()};
+chip.appendChild(del);$("fontList").appendChild(chip);
+});
+drawCurrent();
 }
 
 /* TTS */
 function loadVoices(){
-  if(!("speechSynthesis" in window)){$("ttsStatus").textContent="이 브라우저는 TTS를 지원하지 않아.";return}
-  voiceList=speechSynthesis.getVoices();
-  const s=$("voiceSelect"),old=s.value;s.innerHTML="";
-  const ko=voiceList.filter(v=>v.lang.toLowerCase().startsWith("ko"));
-  const available=ko.length?ko:voiceList;
-  available.forEach(v=>{
-    const o=document.createElement("option");o.value=v.name;o.textContent=v.name+" ("+v.lang+")";s.appendChild(o);
-  });
-  if([...s.options].some(o=>o.value===old))s.value=old;
-  if(!available.length)$("ttsStatus").textContent="설치된 음성이 없어. 브라우저 또는 운영체제의 한국어 음성을 확인해줘.";
+if(!("speechSynthesis" in window)){$("ttsStatus").textContent="이 브라우저는 TTS를 지원하지 않아.";return}
+voiceList=speechSynthesis.getVoices();
+const s=$("voiceSelect"),old=s.value;s.innerHTML="";
+const ko=voiceList.filter(v=>v.lang.toLowerCase().startsWith("ko"));
+const available=ko.length?ko:voiceList;
+available.forEach(v=>{
+const o=document.createElement("option");o.value=v.name;o.textContent=v.name+" ("+v.lang+")";s.appendChild(o);
+});
+if([...s.options].some(o=>o.value===old))s.value=old;
+if(!available.length)$("ttsStatus").textContent="설치된 음성이 없어. 브라우저 또는 운영체제의 한국어 음성을 확인해줘.";
 }
 if("speechSynthesis" in window)speechSynthesis.onvoiceschanged=loadVoices;
 
 function speakText(text){
-  if(!text||!("speechSynthesis" in window))return;
-  speechSynthesis.cancel();
-  const u=new SpeechSynthesisUtterance(text),v=voiceList.find(v=>v.name===$("voiceSelect").value);
-  if(v)u.voice=v;
-  u.lang=v?v.lang:"ko-KR";u.rate=Number($("rate").value);u.pitch=Number($("pitch").value);
-  u.onstart=()=>{$("ttsStatus").textContent="음성 재생 중..."};
-  u.onend=()=>{$("ttsStatus").textContent="재생 완료"};
-  u.onerror=e=>$("ttsStatus").textContent="음성 오류: "+e.error;
-  speechSynthesis.speak(u);
+if(!text||!("speechSynthesis" in window))return;
+speechSynthesis.cancel();
+const u=new SpeechSynthesisUtterance(text),v=voiceList.find(v=>v.name===$("voiceSelect").value);
+if(v)u.voice=v;
+u.lang=v?v.lang:"ko-KR";u.rate=Number($("rate").value);u.pitch=Number($("pitch").value);
+u.onstart=()=>{$("ttsStatus").textContent="음성 재생 중..."};
+u.onend=()=>{$("ttsStatus").textContent="재생 완료"};
+u.onerror=e=>$("ttsStatus").textContent="음성 오류: "+e.error;
+speechSynthesis.speak(u);
 }
-function speakCurrent(){
-  if(!scenes[currentScene])return alert("장면을 먼저 만들어줘.");
-  speakText(scenes[currentScene].caption);
-}
-function speakAll(){
-  const text=scenes.map(s=>s.caption).join(" ");
-  if(!text)return alert("대본을 먼저 입력해줘.");
-  speakText(text);
-}
-function stopSpeech(){
-  if("speechSynthesis" in window)speechSynthesis.cancel();
-  $("ttsStatus").textContent="음성 정지";
-}
+function speakCurrent(){if(!scenes[currentScene])return alert("장면을 먼저 만들어줘.");speakText(scenes[currentScene].caption)}
+function speakAll(){const text=scenes.map(s=>s.caption).join(" ");if(!text)return alert("대본을 먼저 입력해줘.");speakText(text)}
+function stopSpeech(){if("speechSynthesis" in window)speechSynthesis.cancel();$("ttsStatus").textContent="음성 정지"}
 
-/* 장면 생성: 큰 제목은 만들지 않고 대본을 작은 설명으로만 분리 */
+/* 장면 생성 */
 function makeScenes(){
-  const text=$("script").value.trim();
-  if(!text)return alert("대본을 먼저 넣어줘.");
-  scenes.forEach(s=>s.imageUrl&&URL.revokeObjectURL(s.imageUrl));
-  scenes.length=0;
-
-  const sentences=text.replace(/\n+/g," ").match(/[^.!?。]+[.!?。]?/g)||[];
-  sentences.forEach(sentence=>{
-    const caption=sentence.trim();
-    if(caption){
-      scenes.push({
-        caption,
-        image:null,
-        imageUrl:null,
-        search:caption,
-        color:defaultColor
-      });
-    }
-  });
-  currentScene=0;showScenes();drawCurrent();
-  $("status").textContent=scenes.length+"개 장면 생성 완료";
+const text=$("script").value.trim();
+if(!text)return alert("대본을 먼저 넣어줘.");
+scenes.forEach(s=>s.imageUrl&&URL.revokeObjectURL(s.imageUrl));
+scenes.length=0;
+const sentences=text.replace(/\n+/g," ").match(/[^.!?。]+[.!?。]?/g)||[];
+sentences.forEach(sentence=>{
+const caption=sentence.trim();
+if(caption){scenes.push({caption,image:null,imageUrl:null,search:suggestImageQuery(caption),color:defaultColor});}
+});
+currentScene=0;showScenes();drawCurrent();
+$("status").textContent=scenes.length+"개 장면 생성 완료";
 }
 function clearScenes(){
-  if(!confirm("모든 장면을 삭제할까?"))return;
-  scenes.forEach(s=>s.imageUrl&&URL.revokeObjectURL(s.imageUrl));
-  scenes.length=0;$("scenes").innerHTML="";currentScene=0;
-  $("canvas").getContext("2d").clearRect(0,0,720,1280);
+if(!confirm("모든 장면을 삭제할까?"))return;
+scenes.forEach(s=>s.imageUrl&&URL.revokeObjectURL(s.imageUrl));
+scenes.length=0;$("scenes").innerHTML="";currentScene=0;
+$("canvas").getContext("2d").clearRect(0,0,720,1280);
 }
 
-/* 장면 편집: 설명 자막만 */
+/* 장면 편집 */
 function showScenes(){
-  $("scenes").innerHTML="";
-  scenes.forEach((scene,i)=>{
-    const card=document.createElement("div");card.className="scene";
-    const img=document.createElement("img");img.className="scene-preview";img.id="img"+i;
-    if(scene.imageUrl)img.src=scene.imageUrl;
-
-    const editor=document.createElement("div");editor.className="scene-editor";
-    function field(label,el){
-      const w=document.createElement("div");w.className="field";
-      const l=document.createElement("label");l.textContent=label;w.append(l,el);return w;
-    }
-
-    const caption=document.createElement("textarea");
-    caption.rows=3;caption.value=scene.caption;
-    caption.oninput=()=>{scene.caption=caption.value;currentScene=i;drawCurrent()};
-
-    const color=document.createElement("select");
-    [["#65D9E8","시안"],["#FF526B","코랄"],["#B7A7FF","라벤더"],["#FFFFFF","화이트"]].forEach(([v,l])=>{
-      const o=document.createElement("option");o.value=v;o.textContent=l;color.appendChild(o);
-    });
-    color.value=scene.color;
-    color.onchange=()=>{scene.color=color.value;currentScene=i;drawCurrent()};
-
-    const search=document.createElement("input");
-    search.value=scene.search;search.placeholder="이미지 검색어";
-    search.oninput=()=>scene.search=search.value;
-
-    const searchBtn=document.createElement("button");
-    searchBtn.textContent="이미지 검색";
-    searchBtn.onclick=()=>window.open("https://www.google.com/search?tbm=isch&q="+encodeURIComponent(scene.search),"_blank");
-
-    const upload=document.createElement("input");
-    upload.type="file";upload.accept="image/*";upload.onchange=e=>loadImage(e,i);
-
-    const previewBtn=document.createElement("button");
-    previewBtn.textContent="이 장면 미리보기";
-    previewBtn.onclick=()=>{currentScene=i;drawCurrent()};
-
-    const ttsBtn=document.createElement("button");
-    ttsBtn.textContent="이 장면 듣기";
-    ttsBtn.onclick=()=>{currentScene=i;speakCurrent()};
-
-    editor.append(
-      field("작은 설명 자막",caption),
-      field("강조색",color),
-      field("이미지 검색어",search),
-      searchBtn,
-      field("이미지 업로드",upload),
-      previewBtn,
-      ttsBtn
-    );
-    card.append(img,editor);$("scenes").appendChild(card);
-  });
+$("scenes").innerHTML="";
+scenes.forEach((scene,i)=>{
+const card=document.createElement("div");card.className="scene";
+const img=document.createElement("img");img.className="scene-preview";img.id="img"+i;
+if(scene.imageUrl)img.src=scene.imageUrl;
+const editor=document.createElement("div");editor.className="scene-editor";
+function field(label,el){const w=document.createElement("div");w.className="field";const l=document.createElement("label");l.textContent=label;w.append(l,el);return w}
+const caption=document.createElement("textarea");caption.rows=3;caption.value=scene.caption;
+caption.oninput=()=>{scene.caption=caption.value;currentScene=i;drawCurrent()};
+const color=document.createElement("select");
+[["#65D9E8","시안"],["#FF526B","코랄"],["#B7A7FF","라벤더"],["#FFFFFF","화이트"]].forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;color.appendChild(o)});
+color.value=scene.color;color.onchange=()=>{scene.color=color.value;currentScene=i;drawCurrent()};
+const search=document.createElement("input");search.value=scene.search;search.placeholder="이미지 검색어";
+search.oninput=()=>scene.search=search.value;
+const searchBtn=document.createElement("button");searchBtn.textContent="구글 이미지 검색";
+searchBtn.onclick=()=>window.open("https://www.google.com/search?tbm=isch&q="+encodeURIComponent(scene.search),"_blank");
+const commonsBtn=document.createElement("button");commonsBtn.textContent="위키미디어 자료 검색";
+commonsBtn.onclick=()=>window.open("https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search="+encodeURIComponent(scene.search),"_blank");
+const suggestBtn=document.createElement("button");suggestBtn.textContent="검색어 다시 추천";
+suggestBtn.onclick=()=>{scene.search=suggestImageQuery(scene.caption);search.value=scene.search};
+const upload=document.createElement("input");upload.type="file";upload.accept="image/*";upload.onchange=e=>loadImage(e,i);
+const previewBtn=document.createElement("button");previewBtn.textContent="이 장면 미리보기";previewBtn.onclick=()=>{currentScene=i;drawCurrent()};
+const ttsBtn=document.createElement("button");ttsBtn.textContent="이 장면 듣기";ttsBtn.onclick=()=>{currentScene=i;speakCurrent()};
+editor.append(field("작은 설명 자막",caption),field("강조색",color),field("이미지 검색어 (직접 수정 가능)",search),suggestBtn,searchBtn,commonsBtn,field("이미지 업로드",upload),previewBtn,ttsBtn);
+card.append(img,editor);$("scenes").appendChild(card);
+});
 }
 function loadImage(event,i){
-  const file=event.target.files[0];if(!file)return;
-  if(scenes[i].imageUrl)URL.revokeObjectURL(scenes[i].imageUrl);
-  const url=URL.createObjectURL(file),img=new Image();
-  img.onload=()=>{
-    scenes[i].image=img;scenes[i].imageUrl=url;
-    $("img"+i).src=url;currentScene=i;drawCurrent();
-  };
-  img.src=url;
+const file=event.target.files[0];if(!file)return;
+if(scenes[i].imageUrl)URL.revokeObjectURL(scenes[i].imageUrl);
+const url=URL.createObjectURL(file),img=new Image();
+img.onload=()=>{scenes[i].image=img;scenes[i].imageUrl=url;$("img"+i).src=url;currentScene=i;drawCurrent()};
+img.src=url;
 }
-function setDefaultColor(button){
-  defaultColor=button.dataset.color;
-  document.querySelectorAll(".color-option").forEach(b=>b.classList.remove("selected"));
-  button.classList.add("selected");
-}
+function setDefaultColor(button){defaultColor=button.dataset.color;document.querySelectorAll(".color-option").forEach(b=>b.classList.remove("selected"));button.classList.add("selected")}
 function resetLayout(){
-  [["titleSize",76],["captionSize",43],["titleX",6],["titleY",8],["captionX",6],["captionY",58]].forEach(([id,v])=>$(id).value=v);
-  ["titleSize","captionSize","titleX","titleY","captionX","captionY"].forEach(id=>$(id+"Value").textContent=$(id).value);
-  drawCurrent();
+[["titleSize",76],["captionSize",43],["titleX",6],["titleY",8],["captionX",6],["captionY",58]].forEach(([id,v])=>$(id).value=v);
+["titleSize","captionSize","titleX","titleY","captionX","captionY"].forEach(id=>$(id+"Value").textContent=$(id).value);
+drawCurrent();
 }
 
-/* 캔버스 */
+/* 캔버스 텍스트 */
 function wrapText(ctx,text,maxWidth){
-  const lines=[];let line="";
-  for(const char of text){
-    const test=line+char;
-    if(ctx.measureText(test).width>maxWidth&&line){lines.push(line);line=char}
-    else line=test;
-  }
-  if(line)lines.push(line);
-  return lines;
+const result=[];
+String(text||"").split(/\n/).forEach(paragraph=>{
+if(paragraph===""){result.push("");return}
+let line="";
+for(const char of paragraph){
+const test=line+char;
+if(ctx.measureText(test).width>maxWidth&&line){result.push(line);line=char}
+else line=test;
 }
-function drawCurrent(){
-  if(scenes.length)drawScene(currentScene);
-  else drawEmptyCanvas();
+if(line)result.push(line);
+});
+return result;
 }
+function styleValue(id,fallback){return $(id)?$(id).value:fallback}
+function hexToRgba(hex,alpha){
+const h=(hex||"#000000").replace("#","");
+const n=parseInt(h.length===3?h.split("").map(x=>x+x).join(""):h,16);
+return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${Math.max(0,Math.min(1,alpha))})`;
+}
+function roundRect(ctx,x,y,w,h,r){
+ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);
+ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+}
+function drawTextBlock(ctx,text,opt){
+const {x,y,size,font,weight,color,strokeColor,strokeWidth,shadow,align,maxWidth,lineHeight,box,boxColor,boxOpacity,maxLines=5}=opt;
+ctx.save();ctx.font=`${weight} ${size}px "${font}",sans-serif`;ctx.textBaseline="top";
+const lines=wrapText(ctx,text,maxWidth).slice(0,maxLines);
+const widths=lines.map(line=>ctx.measureText(line).width);
+const blockW=Math.max(0,...widths),blockH=lines.length*lineHeight;
+const left=align==="center"?x-blockW/2:(align==="right"?x-blockW:x);
+if(box&&box!=="none"&&lines.length){
+const padX=18,padY=12;
+ctx.fillStyle=box==="solid"?boxColor:hexToRgba(boxColor,Number(boxOpacity)/100);
+roundRect(ctx,left-padX,y-padY,blockW+padX*2,blockH+padY*2,12);ctx.fill();
+}
+ctx.textAlign=align;ctx.shadowColor="rgba(0,0,0,.75)";ctx.shadowBlur=Number(shadow)||0;
+ctx.lineWidth=Number(strokeWidth)||0;ctx.strokeStyle=strokeColor||"#111111";ctx.fillStyle=color||"#FFFFFF";
+lines.forEach((line,j)=>{
+const px=x,py=y+j*lineHeight;
+if(ctx.lineWidth>0)ctx.strokeText(line,px,py);
+ctx.fillText(line,px,py);
+});
+ctx.restore();
+return {x:left,y,w:blockW,h:blockH};
+}
+function drawCurrent(){if(scenes.length)drawScene(currentScene);else drawEmptyCanvas()}
 function drawEmptyCanvas(){
-  const canvas=$("canvas"),ctx=canvas.getContext("2d");
-  ctx.clearRect(0,0,720,1280);
-  ctx.fillStyle="#17191D";ctx.fillRect(0,0,720,1280);
-  const title=$("mainTitle").value.trim();
-  const size=Number($("titleSize").value)||76;
-  const x=720*(Number($("titleX").value)||0)/100;
-  const y=1280*(Number($("titleY").value)||0)/100;
-  ctx.textAlign="left";ctx.textBaseline="top";
-  ctx.font=`900 ${size}px "${$("titleFont").value}",sans-serif`;
-  ctx.fillStyle=defaultColor;ctx.shadowColor="rgba(0,0,0,.7)";ctx.shadowBlur=8;
-  const lines=wrapText(ctx,title,720-x-35).slice(0,3),h=size*1.2;
-  lines.forEach((line,j)=>ctx.fillText(line,x,y+j*h));
-  ctx.shadowBlur=0;
-  canvas.dataset.titleX=x;canvas.dataset.titleY=y;
-  canvas.dataset.titleW=Math.max(0,...lines.map(line=>ctx.measureText(line).width));
-  canvas.dataset.titleH=lines.length*h;
+const canvas=$("canvas"),ctx=canvas.getContext("2d");
+ctx.clearRect(0,0,720,1280);ctx.fillStyle="#17191D";ctx.fillRect(0,0,720,1280);
+const size=Number($("titleSize").value)||76;
+const x=720*Number($("titleX").value)/100,y=1280*Number($("titleY").value)/100;
+const max=720*Number(styleValue("titleMaxWidth",88))/100,align=styleValue("titleAlign","left");
+const anchor=align==="center"?x+max/2:(align==="right"?x+max:x);
+const b=drawTextBlock(ctx,$("mainTitle").value,{x:anchor,y,size,font:$("titleFont").value,weight:900,
+color:styleValue("titleTextColor","#FFFFFF"),strokeColor:styleValue("titleStrokeColor","#111111"),
+strokeWidth:styleValue("titleStroke",2),shadow:styleValue("titleShadow",10),align,maxWidth:max,lineHeight:size*1.2});
+canvas.dataset.titleX=b.x;canvas.dataset.titleY=b.y;canvas.dataset.titleW=b.w;canvas.dataset.titleH=b.h;
 }
 function drawScene(i){
-  const scene=scenes[i];if(!scene)return;
-  const canvas=$("canvas"),ctx=canvas.getContext("2d");
-  ctx.clearRect(0,0,720,1280);
-  ctx.fillStyle="#17191D";ctx.fillRect(0,0,720,1280);
-
-  if(scene.image){
-    const img=scene.image,scale=Math.max(720/img.width,1280/img.height);
-    const w=img.width*scale,h=img.height*scale;
-    ctx.drawImage(img,(720-w)/2,(1280-h)/2,w,h);
-  }
-
-  const title=$("mainTitle").value.trim();
-  const titleSize=Number($("titleSize").value)||76;
-  const captionSize=Number($("captionSize").value)||43;
-  const tx=720*Number($("titleX").value)/100;
-  const ty=1280*Number($("titleY").value)/100;
-  const cx=720*Number($("captionX").value)/100;
-  const cy=1280*Number($("captionY").value)/100;
-
-  ctx.textAlign="left";ctx.textBaseline="top";
-  ctx.shadowColor="rgba(0,0,0,.7)";ctx.shadowBlur=8;
-
-  /* 고정 큰 제목 */
-  ctx.font=`900 ${titleSize}px "${$("titleFont").value}",sans-serif`;
-  ctx.fillStyle=scene.color;
-  const titleLines=wrapText(ctx,title,720-tx-35).slice(0,3);
-  const th=titleSize*1.2;
-  titleLines.forEach((line,j)=>ctx.fillText(line,tx,ty+j*th));
-  const titleWidth=Math.max(0,...titleLines.map(line=>ctx.measureText(line).width));
-
-  /* 장면별 작은 설명 */
-  ctx.font=`700 ${captionSize}px "${$("captionFont").value}",sans-serif`;
-  ctx.fillStyle="#FFFFFF";
-  const captionLines=wrapText(ctx,scene.caption,720-cx-35).slice(0,5);
-  const ch=captionSize*1.35;
-  captionLines.forEach((line,j)=>ctx.fillText(line,cx,cy+j*ch));
-  const captionWidth=Math.max(0,...captionLines.map(line=>ctx.measureText(line).width));
-
-  ctx.shadowBlur=0;
-  ctx.fillStyle="rgba(255,255,255,.75)";
-  ctx.font='500 22px Pretendard,sans-serif';
-  ctx.fillText(`${i+1} / ${scenes.length}`,45,1210);
-
-  canvas.dataset.titleX=tx;canvas.dataset.titleY=ty;
-  canvas.dataset.titleW=titleWidth;canvas.dataset.titleH=titleLines.length*th;
-  canvas.dataset.captionX=cx;canvas.dataset.captionY=cy;
-  canvas.dataset.captionW=captionWidth;canvas.dataset.captionH=captionLines.length*ch;
+const scene=scenes[i];if(!scene)return;
+const canvas=$("canvas"),ctx=canvas.getContext("2d");
+ctx.clearRect(0,0,720,1280);ctx.fillStyle="#17191D";ctx.fillRect(0,0,720,1280);
+if(scene.image){
+const img=scene.image,scale=Math.max(720/img.width,1280/img.height),w=img.width*scale,h=img.height*scale;
+ctx.drawImage(img,(720-w)/2,(1280-h)/2,w,h);
 }
-function previousScene(){
-  if(scenes.length){currentScene=Math.max(0,currentScene-1);drawCurrent()}
+const ts=Number($("titleSize").value)||76,cs=Number($("captionSize").value)||43;
+const tx=720*Number($("titleX").value)/100,ty=1280*Number($("titleY").value)/100;
+const cx=720*Number($("captionX").value)/100,cy=1280*Number($("captionY").value)/100;
+const ta=styleValue("titleAlign","left"),ca=styleValue("captionAlign","center");
+const tw=720*Number(styleValue("titleMaxWidth",88))/100,cw=720*Number(styleValue("captionMaxWidth",88))/100;
+const titleAnchor=ta==="center"?tx+tw/2:(ta==="right"?tx+tw:tx);
+const captionAnchor=ca==="center"?cx+cw/2:(ca==="right"?cx+cw:cx);
+const tb=drawTextBlock(ctx,$("mainTitle").value,{x:titleAnchor,y:ty,size:ts,font:$("titleFont").value,weight:900,
+color:styleValue("titleTextColor","#FFFFFF"),strokeColor:styleValue("titleStrokeColor","#111111"),
+strokeWidth:styleValue("titleStroke",2),shadow:styleValue("titleShadow",10),align:ta,maxWidth:tw,lineHeight:ts*1.2});
+const cb=drawTextBlock(ctx,scene.caption,{x:captionAnchor,y:cy,size:cs,font:$("captionFont").value,weight:750,
+color:styleValue("captionTextColor","#FFFFFF"),strokeColor:styleValue("captionStrokeColor","#111111"),
+strokeWidth:styleValue("captionStroke",3),shadow:styleValue("captionShadow",12),align:ca,maxWidth:cw,
+lineHeight:cs*Number(styleValue("captionLineHeight",135))/100,box:styleValue("captionBox","none"),
+boxColor:styleValue("captionBoxColor","#111111"),boxOpacity:styleValue("captionBoxOpacity",72)});
+ctx.save();ctx.fillStyle="rgba(255,255,255,.75)";ctx.font='500 22px Pretendard,sans-serif';ctx.textAlign="left";
+ctx.fillText(`${i+1} / ${scenes.length}`,45,1210);ctx.restore();
+canvas.dataset.titleX=tb.x;canvas.dataset.titleY=tb.y;canvas.dataset.titleW=tb.w;canvas.dataset.titleH=tb.h;
+canvas.dataset.captionX=cb.x;canvas.dataset.captionY=cb.y;canvas.dataset.captionW=cb.w;canvas.dataset.captionH=cb.h;
 }
-function nextScene(){
-  if(scenes.length){currentScene=Math.min(scenes.length-1,currentScene+1);drawCurrent()}
-}
+function previousScene(){if(scenes.length){currentScene=Math.max(0,currentScene-1);drawCurrent()}}
+function nextScene(){if(scenes.length){currentScene=Math.min(scenes.length-1,currentScene+1);drawCurrent()}}
 
-/* 미리보기에서 제목 및 설명 드래그 */
+/* 미리보기 드래그 */
 let draggingText=null,dragOffsetX=0,dragOffsetY=0;
 $("canvas").addEventListener("pointerdown",e=>{
-  const c=$("canvas"),r=c.getBoundingClientRect();
-  const x=(e.clientX-r.left)*720/r.width,y=(e.clientY-r.top)*1280/r.height;
-  const tx=Number(c.dataset.titleX),ty=Number(c.dataset.titleY);
-  const tw=Number(c.dataset.titleW),th=Number(c.dataset.titleH);
-  const cx=Number(c.dataset.captionX),cy=Number(c.dataset.captionY);
-  const cw=Number(c.dataset.captionW),ch=Number(c.dataset.captionH);
-
-  if(x>=tx-20&&x<=tx+tw+20&&y>=ty-20&&y<=ty+th+20){
-    draggingText="title";dragOffsetX=x-tx;dragOffsetY=y-ty;
-  }else if(scenes.length&&x>=cx-20&&x<=cx+cw+20&&y>=cy-20&&y<=cy+ch+20){
-    draggingText="caption";dragOffsetX=x-cx;dragOffsetY=y-cy;
-  }else return;
-  c.setPointerCapture(e.pointerId);
+const c=$("canvas"),r=c.getBoundingClientRect();
+const x=(e.clientX-r.left)*720/r.width,y=(e.clientY-r.top)*1280/r.height;
+const tx=Number(c.dataset.titleX),ty=Number(c.dataset.titleY),tw=Number(c.dataset.titleW),th=Number(c.dataset.titleH);
+const cx=Number(c.dataset.captionX),cy=Number(c.dataset.captionY),cw=Number(c.dataset.captionW),ch=Number(c.dataset.captionH);
+if(x>=tx-20&&x<=tx+tw+20&&y>=ty-20&&y<=ty+th+20){draggingText="title";dragOffsetX=x-tx;dragOffsetY=y-ty}
+else if(scenes.length&&x>=cx-20&&x<=cx+cw+20&&y>=cy-20&&y<=cy+ch+20){draggingText="caption";dragOffsetX=x-cx;dragOffsetY=y-cy}
+else return;
+c.setPointerCapture(e.pointerId);
 });
 $("canvas").addEventListener("pointermove",e=>{
-  if(!draggingText)return;
-  const c=$("canvas"),r=c.getBoundingClientRect();
-  const x=(e.clientX-r.left)*720/r.width,y=(e.clientY-r.top)*1280/r.height;
-  const p=draggingText==="title"?"title":"caption";
-  const xv=Math.max(0,Math.min(90,Math.round((x-dragOffsetX)/720*100)));
-  const yv=Math.max(0,Math.min(90,Math.round((y-dragOffsetY)/1280*100)));
-  $(p+"X").value=xv;$(p+"Y").value=yv;
-  $(p+"XValue").textContent=xv;$(p+"YValue").textContent=yv;
-  drawCurrent();
+if(!draggingText)return;
+const c=$("canvas"),r=c.getBoundingClientRect();
+const x=(e.clientX-r.left)*720/r.width,y=(e.clientY-r.top)*1280/r.height;
+const p=draggingText==="title"?"title":"caption";
+const xv=Math.max(0,Math.min(90,Math.round((x-dragOffsetX)/720*100)));
+const yv=Math.max(0,Math.min(90,Math.round((y-dragOffsetY)/1280*100)));
+$(p+"X").value=xv;$(p+"Y").value=yv;
+$(p+"XValue").textContent=xv;$(p+"YValue").textContent=yv;drawCurrent();
 });
 $("canvas").addEventListener("pointerup",()=>draggingText=null);
 $("canvas").addEventListener("pointercancel",()=>draggingText=null);
 
+/* 이미지 검색어 추천: AI가 아닌 규칙 기반 추천 */
+function suggestImageQuery(text){
+let t=String(text||"").replace(/[“”"'‘’]/g," ").replace(/[.,!?。！？]/g," ").trim();
+const rules=[
+[/배|선박|요트|범선|항해|침몰|난파/g,"old sailing ship historical photograph"],
+[/바다|해상|대서양|태평양|섬|해안/g,"historic ocean island coastline archival photograph"],
+[/실종|사라지|행방불명|증발/g,"historical disappearance mystery archival photograph"],
+[/전쟁|전투|군인|군대|폭격/g,"historical war archive photograph"],
+[/기차|열차|철도|역/g,"vintage railway train historical photograph"],
+[/비행기|항공|조종사|추락/g,"historic airplane aviation archive photograph"],
+[/마을|도시|거리|건물|저택/g,"historic town street archival photograph"],
+[/왕|여왕|황제|공주|귀족/g,"historical royal portrait painting"],
+[/탐험|탐험가|원정/g,"vintage expedition explorer archival photograph"],
+[/유령|귀신|괴담|저주/g,"gothic vintage haunted house historical illustration"],
+[/살인|시신|사건|범인|용의자/g,"historical crime scene newspaper archive illustration"]
+];
+const hits=[];
+rules.forEach(([re,q])=>{if(re.test(t)&&!hits.includes(q))hits.push(q)});
+const year=(t.match(/(?:18|19|20)\d{2}년?/g)||[])[0];
+const proper=(t.match(/[가-힣A-Za-z]{2,}(?:\s+[가-힣A-Za-z]{2,})?/g)||[])
+.filter(w=>!/(그리고|하지만|그런데|때문에|이후|당시|그들은|그녀는|그것은|있었다|되었다|했습니다|합니다)/.test(w)).slice(0,2);
+return [...proper,...(year?[year]:[]),...hits.slice(0,2),"historical archive"].join(" ").trim()||"historical mystery archival photograph";
+}
+
+/* 디자인 프리셋 */
+const designIds=["titleSize","captionSize","titleX","titleY","captionX","captionY","titleTextColor","titleStrokeColor","titleStroke","titleShadow","titleAlign","captionTextColor","captionStrokeColor","captionStroke","captionShadow","captionAlign","captionBox","captionBoxColor","captionBoxOpacity","captionLineHeight","captionMaxWidth","titleMaxWidth","titleFont","captionFont"];
+function saveDesignPreset(){
+const name=prompt("프리셋 이름을 입력해줘.");if(!name)return;
+const all=JSON.parse(localStorage.getItem("shortsDesignPresets")||"{}");
+all[name]=Object.fromEntries(designIds.map(id=>[id,$(id)?.value]));
+localStorage.setItem("shortsDesignPresets",JSON.stringify(all));refreshPresetMenu();$("designPreset").value=name;
+alert("디자인 프리셋을 저장했어.");
+}
+function refreshPresetMenu(){
+const s=$("designPreset");if(!s)return;
+const selected=s.value;s.innerHTML='<option value="">저장된 프리셋 선택</option>';
+Object.keys(JSON.parse(localStorage.getItem("shortsDesignPresets")||"{}")).forEach(name=>{
+const o=document.createElement("option");o.value=name;o.textContent=name;s.appendChild(o);
+});
+if([...s.options].some(o=>o.value===selected))s.value=selected;
+}
+function loadDesignPreset(){
+const name=$("designPreset").value;if(!name)return alert("적용할 프리셋을 선택해줘.");
+const all=JSON.parse(localStorage.getItem("shortsDesignPresets")||"{}"),data=all[name];if(!data)return;
+Object.entries(data).forEach(([id,value])=>{if($(id)&&value!==undefined)$(id).value=value});
+syncDesignLabels();drawCurrent();
+}
+function syncDesignLabels(){
+["titleSize","captionSize","titleX","titleY","captionX","captionY"].forEach(id=>{if($(id+"Value"))$(id+"Value").textContent=$(id).value});
+}
+function resetDesign(){
+const defaults={titleSize:76,captionSize:43,titleX:6,titleY:8,captionX:6,captionY:58,titleTextColor:"#FFFFFF",
+titleStrokeColor:"#111111",titleStroke:2,titleShadow:10,titleAlign:"left",captionTextColor:"#FFFFFF",
+captionStrokeColor:"#111111",captionStroke:3,captionShadow:12,captionAlign:"center",captionBox:"none",
+captionBoxColor:"#111111",captionBoxOpacity:72,captionLineHeight:135,captionMaxWidth:88,titleMaxWidth:88};
+Object.entries(defaults).forEach(([id,v])=>$(id).value=v);
+syncDesignLabels();drawCurrent();
+}
+designIds.forEach(id=>$(id)?.addEventListener("input",drawCurrent));
+refreshPresetMenu();
+
+/* 설명란 템플릿 */
+function makeDescription(){
+const title=$("mainTitle").value.trim()||"사라진 시간들";
+const parts=[title,$("descriptionIntro").value.trim(),$("descriptionFixed").value.trim(),
+$("descriptionSources").value.trim()?"[자료 출처]\n"+$("descriptionSources").value.trim():"",
+$("descriptionTags").value.trim()].filter(Boolean);
+$("descriptionOutput").value=parts.join("\n\n");
+}
+async function copyDescription(){
+const text=$("descriptionOutput").value;if(!text)return alert("먼저 설명란을 만들어줘.");
+try{await navigator.clipboard.writeText(text);alert("설명란을 복사했어.")}
+catch(e){$("descriptionOutput").select();document.execCommand("copy");alert("설명란을 복사했어.")}
+}
+
 /* 영상 출력: 무음 WebM */
 async function renderVideo(){
-  if(recorderActive)return;
-  if(!scenes.length)return alert("장면을 먼저 만들어줘.");
-  if(!scenes.some(s=>s.image))return alert("이미지를 하나 이상 업로드해줘.");
-  if(!window.MediaRecorder)return alert("이 브라우저는 영상 녹화를 지원하지 않아.");
-
-  recorderActive=true;stopSpeech();
-  $("status").textContent="폰트 준비 중...";
-  $("video").hidden=true;$("download").hidden=true;
-
-  try{
-    await document.fonts.ready;
-    const canvas=$("canvas"),stream=canvas.captureStream(30);
-    const mime=MediaRecorder.isTypeSupported("video/webm;codecs=vp9")?"video/webm;codecs=vp9":"video/webm";
-    const recorder=new MediaRecorder(stream,{mimeType:mime}),chunks=[];
-
-    recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
-    recorder.onstop=()=>{
-      const blob=new Blob(chunks,{type:"video/webm"}),url=URL.createObjectURL(blob);
-      $("video").src=url;$("video").hidden=false;
-      $("download").href=url;$("download").download="shorts.webm";
-      $("download").hidden=false;$("download").textContent="영상 다운로드";
-      $("status").textContent="영상 제작 완료! (무음 WebM)";
-      stream.getTracks().forEach(t=>t.stop());
-      recorderActive=false;
-    };
-
-    recorder.start();
-    const duration=Math.max(2,Math.min(15,Number($("duration").value)||4))*1000;
-    for(let i=0;i<scenes.length;i++){
-      currentScene=i;drawCurrent();
-      $("status").textContent=`영상 제작 중 ${i+1}/${scenes.length}`;
-      await new Promise(r=>setTimeout(r,duration));
-    }
-    recorder.stop();
-  }catch(e){
-    recorderActive=false;
-    $("status").textContent="오류: "+e.message;
-  }
+if(recorderActive)return;
+if(!scenes.length)return alert("장면을 먼저 만들어줘.");
+if(!scenes.some(s=>s.image))return alert("이미지를 하나 이상 업로드해줘.");
+if(!window.MediaRecorder)return alert("이 브라우저는 영상 녹화를 지원하지 않아.");
+recorderActive=true;stopSpeech();
+$("status").textContent="폰트 준비 중...";
+$("video").hidden=true;$("download").hidden=true;
+try{
+await document.fonts.ready;
+const canvas=$("canvas"),stream=canvas.captureStream(30);
+const mime=MediaRecorder.isTypeSupported("video/webm;codecs=vp9")?"video/webm;codecs=vp9":"video/webm";
+const recorder=new MediaRecorder(stream,{mimeType:mime}),chunks=[];
+recorder.ondataavailable=e=>{if(e.data.size)chunks.push(e.data)};
+recorder.onstop=()=>{
+const blob=new Blob(chunks,{type:"video/webm"}),url=URL.createObjectURL(blob);
+$("video").src=url;$("video").hidden=false;
+$("download").href=url;$("download").download="shorts.webm";
+$("download").hidden=false;$("download").textContent="영상 다운로드";
+$("status").textContent="영상 제작 완료! (무음 WebM)";
+stream.getTracks().forEach(t=>t.stop());recorderActive=false;
+};
+recorder.start();
+const duration=Math.max(2,Math.min(15,Number($("duration").value)||4))*1000;
+for(let i=0;i<scenes.length;i++){
+currentScene=i;drawCurrent();$("status").textContent=`영상 제작 중 ${i+1}/${scenes.length}`;
+await new Promise(r=>setTimeout(r,duration));
+}
+recorder.stop();
+}catch(e){recorderActive=false;$("status").textContent="오류: "+e.message}
 }
 </script>
 </body>
