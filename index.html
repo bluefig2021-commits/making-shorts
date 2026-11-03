@@ -38,7 +38,7 @@ input[type=range]{padding:0;accent-color:#4389e8}
 .scene-preview{width:110px;aspect-ratio:9/16;object-fit:cover;background:#eaf1fa;border-radius:9px}
 .scene-editor{min-width:0}
 .scene-editor textarea{margin-bottom:5px}
-#canvas{width:100%;max-width:360px;aspect-ratio:9/16;background:#17191d;border-radius:12px;display:block;touch-action:none;cursor:move}
+#canvas{width:100%;max-width:360px;aspect-ratio:9/16;background:#000000;border-radius:12px;display:block;touch-action:none;cursor:move}
 #video{width:100%;max-width:360px}
 #status{font-size:14px;color:#6d7e94}
 .small{font-size:12px;color:#8190a4}
@@ -47,6 +47,9 @@ input[type=range]{padding:0;accent-color:#4389e8}
 .color-option.selected{outline:3px solid #4389e8}
 .font-list{display:flex;gap:8px;flex-wrap:wrap}
 .font-chip{padding:8px 12px;border-radius:20px;background:#edf4fc;font-size:13px}
+.scene-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin-top:10px}
+.scene-tools .field{margin:4px 0}
+.scene-tools label{font-size:12px}
 hr{border:0;border-top:1px solid #e7edf5;margin:20px 0}
 @media(max-width:600px){body{padding:12px}.scene{grid-template-columns:82px minmax(0,1fr);gap:10px;padding:10px}.scene-preview{width:82px}.panel{padding:14px}}
 </style>
@@ -111,7 +114,7 @@ hr{border:0;border-top:1px solid #e7edf5;margin:20px 0}
 
 <section>
 <h2>4. 장면 편집</h2>
-<p class="small">큰 제목은 고정돼. 아래에서 장면별 작은 설명, 강조색, 이미지를 수정할 수 있어.</p>
+<p class="small">큰 제목은 고정돼. 장면별 설명, 이미지, 사진 크기와 움직임을 각각 설정할 수 있어.</p>
 <div id="scenes" class="grid" style="grid-template-columns:1fr"></div>
 </section>
 
@@ -126,7 +129,7 @@ hr{border:0;border-top:1px solid #e7edf5;margin:20px 0}
 <div class="field"><label>설명 세로 위치 <span id="captionYValue">58</span>%</label><input id="captionY" type="range" min="15" max="90" value="58" oninput="captionYValue.textContent=this.value;drawCurrent()"></div>
 <div class="field"><label>장면당 영상 시간 (초)</label><input id="duration" type="number" min="2" max="15" value="4"></div>
 </div>
-<p class="small">미리보기에서 제목과 자막을 끌어 위치를 바꿀 수 있어. 자막은 가로 폭에 맞춰 자동 줄바꿈돼.</p>
+<p class="small">미리보기에서 제목과 자막을 끌어 위치를 바꿀 수 있어.</p>
 
 <div class="field">
 <label>기본 강조색</label>
@@ -140,8 +143,9 @@ hr{border:0;border-top:1px solid #e7edf5;margin:20px 0}
 
 <hr>
 <h2>디자인 세부 규격</h2>
-<p class="small">제목과 설명 자막의 모양을 각각 설정해. 저장한 프리셋은 다음 영상에도 그대로 쓸 수 있어.</p>
+<p class="small">제목과 설명 자막의 모양을 각각 설정해. 프리셋으로 저장할 수 있어.</p>
 <div class="grid">
+<div class="field"><label>영상 배경색</label><input id="backgroundColor" type="color" value="#000000"></div>
 <div class="field"><label>큰 제목 글자색</label><input id="titleTextColor" type="color" value="#FFFFFF"></div>
 <div class="field"><label>큰 제목 외곽선 색</label><input id="titleStrokeColor" type="color" value="#111111"></div>
 <div class="field"><label>큰 제목 외곽선 두께</label><input id="titleStroke" type="range" min="0" max="10" value="2"></div>
@@ -160,12 +164,15 @@ hr{border:0;border-top:1px solid #e7edf5;margin:20px 0}
 <div class="field"><label>제목 최대 가로 폭</label><input id="titleMaxWidth" type="range" min="50" max="96" value="88"></div>
 </div>
 <div class="toolbar">
-<button class="primary" onclick="saveDesignPreset()">현재 디자인 프리셋 저장</button>
+<button class="primary" onclick="saveLastSettings()">현재 설정 저장</button>
 <select id="designPreset"><option value="">저장된 프리셋 선택</option></select>
 <button onclick="loadDesignPreset()">프리셋 적용</button>
+<button onclick="saveDesignPreset()">새 프리셋 추가</button>
+<button onclick="updateDesignPreset()">선택 프리셋 수정</button>
+<button class="danger" onclick="deleteDesignPreset()">선택 프리셋 삭제</button>
 <button onclick="resetDesign()">디자인 초기화</button>
-</div>
 <button onclick="resetLayout()">위치 기본값으로</button>
+</div>
 </section>
 
 <section class="panel">
@@ -187,6 +194,8 @@ hr{border:0;border-top:1px solid #e7edf5;margin:20px 0}
 <p class="toolbar">
 <button onclick="previousScene()">이전 장면</button>
 <button onclick="nextScene()">다음 장면</button>
+<button onclick="previewMotion()">현재 장면 움직임 미리보기</button>
+<button onclick="stopMotionPreview()">미리보기 정지</button>
 <button class="primary" onclick="renderVideo()">영상 만들기</button>
 </p>
 <p id="status">대본을 입력하고 장면을 만들어줘.</p>
@@ -303,7 +312,7 @@ scenes.length=0;
 const sentences=text.replace(/\n+/g," ").match(/[^.!?。]+[.!?。]?/g)||[];
 sentences.forEach(sentence=>{
 const caption=sentence.trim();
-if(caption){scenes.push({caption,image:null,imageUrl:null,search:suggestImageQuery(caption),color:defaultColor});}
+if(caption){scenes.push({caption,image:null,imageUrl:null,search:suggestImageQuery(caption),color:defaultColor,motion:"zoomIn",imageScale:100,imageX:0,imageY:0});}
 });
 currentScene=0;showScenes();drawCurrent();
 $("status").textContent=scenes.length+"개 장면 생성 완료";
@@ -340,7 +349,19 @@ suggestBtn.onclick=()=>{scene.search=suggestImageQuery(scene.caption);search.val
 const upload=document.createElement("input");upload.type="file";upload.accept="image/*";upload.onchange=e=>loadImage(e,i);
 const previewBtn=document.createElement("button");previewBtn.textContent="이 장면 미리보기";previewBtn.onclick=()=>{currentScene=i;drawCurrent()};
 const ttsBtn=document.createElement("button");ttsBtn.textContent="이 장면 듣기";ttsBtn.onclick=()=>{currentScene=i;speakCurrent()};
-editor.append(field("작은 설명 자막",caption),field("강조색",color),field("이미지 검색어 (직접 수정 가능)",search),suggestBtn,searchBtn,commonsBtn,field("이미지 업로드",upload),previewBtn,ttsBtn);
+
+const motion=document.createElement("select");
+[["zoomIn","천천히 줌 인"],["zoomOut","천천히 줌 아웃"],["leftToRight","왼쪽 → 오른쪽"],["rightToLeft","오른쪽 → 왼쪽"],["upToDown","위 → 아래"],["downToUp","아래 → 위"],["zoomPan","줌 인 + 대각선 이동"],["none","움직임 없음"]].forEach(([v,l])=>{const o=document.createElement("option");o.value=v;o.textContent=l;motion.appendChild(o)});
+motion.value=scene.motion||"zoomIn";motion.onchange=()=>{scene.motion=motion.value;currentScene=i;drawCurrent()};
+const scale=document.createElement("input");scale.type="range";scale.min="50";scale.max="180";scale.value=scene.imageScale||100;
+scale.oninput=()=>{scene.imageScale=Number(scale.value);currentScene=i;drawCurrent()};
+const posX=document.createElement("input");posX.type="range";posX.min="-50";posX.max="50";posX.value=scene.imageX||0;
+posX.oninput=()=>{scene.imageX=Number(posX.value);currentScene=i;drawCurrent()};
+const posY=document.createElement("input");posY.type="range";posY.min="-50";posY.max="50";posY.value=scene.imageY||0;
+posY.oninput=()=>{scene.imageY=Number(posY.value);currentScene=i;drawCurrent()};
+const motionBox=document.createElement("div");motionBox.className="scene-tools";
+motionBox.append(field("사진 움직임",motion),field("사진 크기",scale),field("사진 가로 위치",posX),field("사진 세로 위치",posY));
+editor.append(field("작은 설명 자막",caption),field("강조색",color),field("이미지 검색어 (직접 수정 가능)",search),suggestBtn,searchBtn,commonsBtn,field("이미지 업로드",upload),motionBox,previewBtn,ttsBtn);
 card.append(img,editor);$("scenes").appendChild(card);
 });
 }
@@ -381,7 +402,7 @@ return `rgba(${(n>>16)&255},${(n>>8)&255},${n&255},${Math.max(0,Math.min(1,alpha
 }
 function roundRect(ctx,x,y,w,h,r){
 ctx.beginPath();ctx.moveTo(x+r,y);ctx.arcTo(x+w,y,x+w,y+h,r);
-ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y,r);ctx.arcTo(x,y,x+w,y,r);ctx.closePath();
+ctx.arcTo(x+w,y+h,x,y+h,r);ctx.arcTo(x,y+h,x,y);ctx.arcTo(x,y,x+w,y);ctx.closePath();
 }
 function drawTextBlock(ctx,text,opt){
 const {x,y,size,font,weight,color,strokeColor,strokeWidth,shadow,align,maxWidth,lineHeight,box,boxColor,boxOpacity,maxLines=5}=opt;
@@ -408,7 +429,7 @@ return {x:left,y,w:blockW,h:blockH};
 function drawCurrent(){if(scenes.length)drawScene(currentScene);else drawEmptyCanvas()}
 function drawEmptyCanvas(){
 const canvas=$("canvas"),ctx=canvas.getContext("2d");
-ctx.clearRect(0,0,720,1280);ctx.fillStyle="#17191D";ctx.fillRect(0,0,720,1280);
+ctx.clearRect(0,0,720,1280);ctx.fillStyle=styleValue("backgroundColor","#000000");ctx.fillRect(0,0,720,1280);
 const size=Number($("titleSize").value)||76;
 const x=720*Number($("titleX").value)/100,y=1280*Number($("titleY").value)/100;
 const max=720*Number(styleValue("titleMaxWidth",88))/100,align=styleValue("titleAlign","left");
@@ -418,13 +439,27 @@ color:styleValue("titleTextColor","#FFFFFF"),strokeColor:styleValue("titleStroke
 strokeWidth:styleValue("titleStroke",2),shadow:styleValue("titleShadow",10),align,maxWidth:max,lineHeight:size*1.2});
 canvas.dataset.titleX=b.x;canvas.dataset.titleY=b.y;canvas.dataset.titleW=b.w;canvas.dataset.titleH=b.h;
 }
-function drawScene(i){
+function drawScene(i,progress=0){
 const scene=scenes[i];if(!scene)return;
 const canvas=$("canvas"),ctx=canvas.getContext("2d");
-ctx.clearRect(0,0,720,1280);ctx.fillStyle="#17191D";ctx.fillRect(0,0,720,1280);
+ctx.clearRect(0,0,720,1280);ctx.fillStyle=styleValue("backgroundColor","#000000");ctx.fillRect(0,0,720,1280);
 if(scene.image){
-const img=scene.image,scale=Math.max(720/img.width,1280/img.height),w=img.width*scale,h=img.height*scale;
-ctx.drawImage(img,(720-w)/2,(1280-h)/2,w,h);
+const img=scene.image;
+// 원본 비율 유지. 9:16 화면에 억지로 늘리거나 잘라내지 않음
+const base=Math.min(650/img.width,820/img.height)*(Number(scene.imageScale||100)/100);
+let scale=base,x=360+(Number(scene.imageX||0)*5),y=620+(Number(scene.imageY||0)*7);
+const t=Math.max(0,Math.min(1,progress)),ease=t*t*(3-2*t);
+switch(scene.motion||"zoomIn"){
+case "zoomIn":scale=base*(1+0.18*ease);break;
+case "zoomOut":scale=base*(1.18-0.18*ease);break;
+case "leftToRight":x-=100-200*ease;break;
+case "rightToLeft":x+=100-200*ease;break;
+case "upToDown":y-=120-240*ease;break;
+case "downToUp":y+=120-240*ease;break;
+case "zoomPan":scale=base*(1+0.16*ease);x-=65*ease;y-=35*ease;break;
+}
+const w=img.width*scale,h=img.height*scale;
+ctx.drawImage(img,x-w/2,y-h/2,w,h);
 }
 const ts=Number($("titleSize").value)||76,cs=Number($("captionSize").value)||43;
 const tx=720*Number($("titleX").value)/100,ty=1280*Number($("titleY").value)/100;
@@ -499,13 +534,18 @@ return [...proper,...(year?[year]:[]),...hits.slice(0,2),"historical archive"].j
 }
 
 /* 디자인 프리셋 */
-const designIds=["titleSize","captionSize","titleX","titleY","captionX","captionY","titleTextColor","titleStrokeColor","titleStroke","titleShadow","titleAlign","captionTextColor","captionStrokeColor","captionStroke","captionShadow","captionAlign","captionBox","captionBoxColor","captionBoxOpacity","captionLineHeight","captionMaxWidth","titleMaxWidth","titleFont","captionFont"];
+const designIds=["titleSize","captionSize","titleX","titleY","captionX","captionY","titleTextColor","titleStrokeColor","titleStroke","titleShadow","titleAlign","captionTextColor","captionStrokeColor","captionStroke","captionShadow","captionAlign","captionBox","captionBoxColor","captionBoxOpacity","captionLineHeight","captionMaxWidth","titleMaxWidth","titleFont","captionFont","backgroundColor"];
+function getDesignValues(){return Object.fromEntries(designIds.map(id=>[id,$(id)?.value]));}
+function saveLastSettings(){localStorage.setItem("shortsLastSettings",JSON.stringify(getDesignValues()));alert("현재 설정을 저장했어. 다음에도 마지막 설정을 불러올게.");}
+function restoreLastSettings(){
+try{const data=JSON.parse(localStorage.getItem("shortsLastSettings")||"null");if(data)Object.entries(data).forEach(([id,v])=>{if($(id)&&v!==undefined)$(id).value=v});syncDesignLabels();}catch(e){console.warn(e)}
+}
 function saveDesignPreset(){
-const name=prompt("프리셋 이름을 입력해줘.");if(!name)return;
+const name=prompt("새 프리셋 이름을 입력해줘.");if(!name||!name.trim())return;
 const all=JSON.parse(localStorage.getItem("shortsDesignPresets")||"{}");
-all[name]=Object.fromEntries(designIds.map(id=>[id,$(id)?.value]));
-localStorage.setItem("shortsDesignPresets",JSON.stringify(all));refreshPresetMenu();$("designPreset").value=name;
-alert("디자인 프리셋을 저장했어.");
+if(all[name.trim()]&&!confirm("같은 이름의 프리셋이 있어. 덮어쓸까?"))return;
+all[name.trim()]=getDesignValues();localStorage.setItem("shortsDesignPresets",JSON.stringify(all));
+refreshPresetMenu();$("designPreset").value=name.trim();alert("프리셋을 저장했어.");
 }
 function refreshPresetMenu(){
 const s=$("designPreset");if(!s)return;
@@ -521,11 +561,23 @@ const all=JSON.parse(localStorage.getItem("shortsDesignPresets")||"{}"),data=all
 Object.entries(data).forEach(([id,value])=>{if($(id)&&value!==undefined)$(id).value=value});
 syncDesignLabels();drawCurrent();
 }
+function updateDesignPreset(){
+const name=$("designPreset").value;if(!name)return alert("수정할 프리셋을 먼저 선택해줘.");
+const all=JSON.parse(localStorage.getItem("shortsDesignPresets")||"{}");
+if(!confirm(`'${name}' 프리셋을 현재 설정으로 덮어쓸까?`))return;
+all[name]=getDesignValues();localStorage.setItem("shortsDesignPresets",JSON.stringify(all));alert("선택한 프리셋을 수정했어.");
+}
+function deleteDesignPreset(){
+const name=$("designPreset").value;if(!name)return alert("삭제할 프리셋을 선택해줘.");
+if(!confirm(`'${name}' 프리셋을 삭제할까?`))return;
+const all=JSON.parse(localStorage.getItem("shortsDesignPresets")||"{}");delete all[name];
+localStorage.setItem("shortsDesignPresets",JSON.stringify(all));refreshPresetMenu();alert("프리셋을 삭제했어.");
+}
 function syncDesignLabels(){
 ["titleSize","captionSize","titleX","titleY","captionX","captionY"].forEach(id=>{if($(id+"Value"))$(id+"Value").textContent=$(id).value});
 }
 function resetDesign(){
-const defaults={titleSize:76,captionSize:43,titleX:6,titleY:8,captionX:6,captionY:58,titleTextColor:"#FFFFFF",
+const defaults={backgroundColor:"#000000",titleSize:76,captionSize:43,titleX:6,titleY:8,captionX:6,captionY:58,titleTextColor:"#FFFFFF",
 titleStrokeColor:"#111111",titleStroke:2,titleShadow:10,titleAlign:"left",captionTextColor:"#FFFFFF",
 captionStrokeColor:"#111111",captionStroke:3,captionShadow:12,captionAlign:"center",captionBox:"none",
 captionBoxColor:"#111111",captionBoxOpacity:72,captionLineHeight:135,captionMaxWidth:88,titleMaxWidth:88};
@@ -533,7 +585,7 @@ Object.entries(defaults).forEach(([id,v])=>$(id).value=v);
 syncDesignLabels();drawCurrent();
 }
 designIds.forEach(id=>$(id)?.addEventListener("input",drawCurrent));
-refreshPresetMenu();
+restoreLastSettings();refreshPresetMenu();drawCurrent();
 
 /* 설명란 템플릿 */
 function makeDescription(){
@@ -547,6 +599,25 @@ async function copyDescription(){
 const text=$("descriptionOutput").value;if(!text)return alert("먼저 설명란을 만들어줘.");
 try{await navigator.clipboard.writeText(text);alert("설명란을 복사했어.")}
 catch(e){$("descriptionOutput").select();document.execCommand("copy");alert("설명란을 복사했어.")}
+}
+
+/* 움직임 미리보기 */
+let motionPreviewFrame=null,motionPreviewStart=0;
+function previewMotion(){
+if(!scenes.length)return alert("장면을 먼저 만들어줘.");
+stopMotionPreview();
+const duration=Math.max(2,Number($("duration").value)||4)*1000;
+motionPreviewStart=performance.now();
+const tick=now=>{
+const p=Math.min(1,(now-motionPreviewStart)/duration);
+drawScene(currentScene,p);
+if(p<1)motionPreviewFrame=requestAnimationFrame(tick);else motionPreviewFrame=null;
+};
+motionPreviewFrame=requestAnimationFrame(tick);
+}
+function stopMotionPreview(){
+if(motionPreviewFrame!==null)cancelAnimationFrame(motionPreviewFrame);
+motionPreviewFrame=null;drawCurrent();
 }
 
 /* 영상 출력: 무음 WebM */
@@ -575,8 +646,16 @@ stream.getTracks().forEach(t=>t.stop());recorderActive=false;
 recorder.start();
 const duration=Math.max(2,Math.min(15,Number($("duration").value)||4))*1000;
 for(let i=0;i<scenes.length;i++){
-currentScene=i;drawCurrent();$("status").textContent=`영상 제작 중 ${i+1}/${scenes.length}`;
-await new Promise(r=>setTimeout(r,duration));
+currentScene=i;$("status").textContent=`영상 제작 중 ${i+1}/${scenes.length}`;
+const start=performance.now();
+await new Promise(resolve=>{
+function frame(now){
+const progress=Math.min(1,(now-start)/duration);
+drawScene(i,progress);
+if(progress<1)requestAnimationFrame(frame);else resolve();
+}
+requestAnimationFrame(frame);
+});
 }
 recorder.stop();
 }catch(e){recorderActive=false;$("status").textContent="오류: "+e.message}
