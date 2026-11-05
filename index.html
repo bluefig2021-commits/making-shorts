@@ -12,71 +12,93 @@
 <script src="https://www.gstatic.com/firebasejs/10.12.2/firebase-auth-compat.js"></script>
 <style>
 *{box-sizing:border-box}
-body{margin:0;padding:22px;background:#f4f8fd;color:#24344a;font-family:Pretendard,Arial,sans-serif}
-main{max-width:1100px;margin:auto}
-h1{font-size:28px;font-weight:900}
-h2{font-size:20px;margin:0 0 15px;font-weight:850}
-p{line-height:1.6}
-button,input,textarea,select{font:inherit;border-radius:10px;padding:11px;border:1px solid #d9e4f0;background:white;color:#26364b}
+body{margin:0;padding:12px;background:#f4f8fd;color:#24344a;font-family:Pretendard,Arial,sans-serif}
+main{max-width:1700px;margin:auto}
+h1{font-size:26px;font-weight:900}
+h2{font-size:18px;margin:0 0 12px;font-weight:850}
+p{line-height:1.55}
+button,input,textarea,select{font:inherit;border-radius:10px;padding:9px 11px;border:1px solid #d9e4f0;background:white;color:#26364b}
 button{cursor:pointer;font-weight:750}
 button:hover{filter:brightness(.97)}
 .primary{background:#4389e8;color:white;border:0}
 .danger{color:#e34e65}
-.panel{background:white;border:1px solid #e1eaf4;border-radius:16px;padding:20px;margin:18px 0}
+.panel{background:white;border:1px solid #e1eaf4;border-radius:16px;padding:20px;margin:14px 0}
 textarea{width:100%;resize:vertical}
-#script{height:180px}
 #login{max-width:420px;margin:100px auto;text-align:center;background:white;padding:35px;border-radius:18px}
 #app{display:none}
 #user{color:#8291a5;font-size:13px}
-.toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center}
+.toolbar{display:flex;gap:8px;flex-wrap:wrap;align-items:center}
 .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:14px}
-.field{display:block;margin:10px 0}
-.field label{display:block;font-size:13px;font-weight:800;color:#647993;margin-bottom:6px}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.field{display:block;margin:8px 0}
+.field label{display:block;font-size:12px;font-weight:800;color:#647993;margin-bottom:5px}
 .field input,.field select,.field textarea{width:100%}
 input[type=range]{padding:0;accent-color:#4389e8}
-.scene{display:grid;grid-template-columns:110px minmax(0,1fr);gap:15px;padding:15px;background:white;border:1px solid #e1eaf4;border-radius:15px;margin-bottom:12px}
-.scene-preview{width:110px;aspect-ratio:9/16;object-fit:cover;background:#eaf1fa;border-radius:9px}
-.scene-editor{min-width:0}
-.scene-editor textarea{margin-bottom:5px}
-.scene-tools{display:grid;grid-template-columns:repeat(auto-fit,minmax(145px,1fr));gap:8px;margin-top:10px}
-.scene-tools .field{margin:4px 0}
-#canvas{width:100%;max-width:360px;aspect-ratio:9/16;background:#000;border-radius:12px;display:block;touch-action:none;cursor:move}
-#video{width:100%;max-width:360px}
-#status{font-size:14px;color:#6d7e94}
-.small{font-size:12px;color:#8190a4}
-.font-list{display:flex;gap:8px;flex-wrap:wrap}
-.font-chip{padding:8px 12px;border-radius:20px;background:#edf4fc;font-size:13px}
-hr{border:0;border-top:1px solid #e7edf5;margin:20px 0}
-.topbar{max-width:1100px;margin:0 auto 18px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
+input[type=color]{padding:2px;height:38px}
+.small{font-size:12px;color:#8190a4;line-height:1.5}
+hr{border:0;border-top:1px solid #e7edf5;margin:14px 0}
+.topbar{margin:0 auto 8px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap}
 .brand{display:flex;align-items:center;gap:10px}
-.brand-mark{width:42px;height:42px;border-radius:12px;background:#1d2939;color:#65d9e8;display:grid;place-items:center;font-size:23px;font-weight:900}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:18px 0}
-.tab-btn{border:1px solid #d8e2ef;background:#fff;color:#52647a;padding:12px 18px;border-radius:12px}
+.brand-mark{width:38px;height:38px;border-radius:11px;background:#1d2939;color:#65d9e8;display:grid;place-items:center;font-size:20px;font-weight:900}
+.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:8px 0 12px}
+.tab-btn{border:1px solid #d8e2ef;background:#fff;color:#52647a;padding:10px 18px;border-radius:12px}
 .tab-btn.active{background:#24344a;color:#fff;border-color:#24344a}
 .tab-page{display:none}
 .tab-page.active{display:block}
 .trend-result{display:grid;grid-template-columns:1fr auto;gap:12px;padding:14px 0;border-bottom:1px solid #e7edf5}
 .trend-result a{color:#2672c9;font-weight:800;text-decoration:none}
 .trend-meta{font-size:12px;color:#7b8ba0;margin-top:5px}
+.font-list{display:flex;gap:8px;flex-wrap:wrap;margin:6px 0}
+.font-chip{padding:6px 10px;border-radius:20px;background:#edf4fc;font-size:12px}
 .size-picker{display:flex;gap:8px}
-.size-picker button{min-width:58px}
+.size-picker button{min-width:50px}
 .size-picker button.selected{background:#24344a;color:#fff;border-color:#24344a}
-/* 타임라인 */
-.tl-wrap{position:relative;margin:14px 0;padding-bottom:4px}
-.tl-row{display:flex;height:38px;margin:4px 0 10px;background:#eef3fa;border-radius:8px;overflow:hidden}
-.tl-seg{height:100%;border-right:2px solid #fff;font-size:11px;overflow:hidden;white-space:nowrap;padding:0 6px;display:flex;align-items:center;color:#fff;cursor:pointer;background:#4389e8}
-.tl-seg.video{background:#2f9e6f}
-.tl-cap .tl-seg{background:#64748b}
-.tl-cap .tl-seg.new{box-shadow:inset 4px 0 0 #ffd43b}
-#playLine{position:absolute;top:0;bottom:0;width:2px;background:#e34e65;pointer-events:none;left:0}
-#seekBar{width:100%}
-@media(max-width:600px){
+
+/* 에디터 레이아웃 */
+.editor{display:grid;grid-template-columns:300px minmax(0,1fr) 340px;grid-template-rows:minmax(0,1fr) 290px;gap:12px;height:calc(100vh - 150px);min-height:620px}
+.side{background:#fff;border:1px solid #e1eaf4;border-radius:14px;display:flex;flex-direction:column;min-height:0;overflow:hidden}
+.side-body{overflow-y:auto;padding:12px;flex:1}
+.mini-tabs{display:flex;border-bottom:1px solid #e7edf5}
+.mt{flex:1;border:0;border-radius:0;background:#fff;padding:11px 4px;color:#7b8ba0}
+.mt.active{color:#24344a;box-shadow:inset 0 -3px 0 #4389e8}
+.lt,.rt{display:none}
+.lt.active,.rt.active{display:block}
+.center{display:flex;flex-direction:column;min-height:0;min-width:0;background:#fff;border:1px solid #e1eaf4;border-radius:14px;padding:10px;gap:8px}
+.stage{flex:1;min-height:0;display:flex;justify-content:center;align-items:center;background:#eef3fa;border-radius:10px;padding:6px}
+#canvas{height:100%;width:auto;max-width:100%;aspect-ratio:9/16;background:#000;border-radius:8px;display:block;touch-action:none;cursor:move}
+.transport{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+#status{font-size:12px;color:#6d7e94;min-height:16px}
+.timeline-panel{grid-column:1/-1;background:#fff;border:1px solid #e1eaf4;border-radius:14px;padding:10px;display:flex;flex-direction:column;min-height:0;gap:8px}
+#tlBox{display:flex;flex:1;min-height:0}
+#tlLabels{width:34px;flex:none}
+#tlLabels div{height:56px;margin-top:6px;display:grid;place-items:center;font-size:16px}
+#tlLabels div.sp{height:26px;margin-top:0}
+#tlScroll{flex:1;overflow-x:auto;overflow-y:hidden;position:relative}
+#tlInner{position:relative;min-height:150px;height:100%}
+.ruler{position:relative;height:26px}
+.tick{position:absolute;top:0;height:26px;font-size:10px;color:#8190a4;border-left:1px solid #cfd9e6;padding-left:3px;cursor:pointer}
+.trackrow{position:relative;height:56px;margin-top:6px;background:#eef3fa;border-radius:8px}
+.seg{position:absolute;top:0;height:100%;background:#4389e8 center/cover no-repeat;border-radius:8px;border:2px solid #fff;color:#fff;font-size:11px;overflow:hidden;cursor:pointer}
+.seg .lbl{position:absolute;left:0;right:10px;top:0;bottom:0;padding:4px 6px;text-shadow:0 1px 3px #000;overflow:hidden;white-space:nowrap}
+.seg.video{background-color:#2f9e6f}
+.seg.cap{background:#64748b}
+.seg.cap.new{box-shadow:inset 4px 0 0 #ffd43b}
+.seg.sel{outline:3px solid #ffd43b;z-index:2}
+.handle{position:absolute;right:0;top:0;bottom:0;width:10px;cursor:ew-resize;background:rgba(255,255,255,.6)}
+#playLine{position:absolute;top:0;bottom:0;width:2px;background:#e34e65;pointer-events:none;z-index:5}
+#mediaList{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:10px}
+.tile{border:2px solid transparent;border-radius:10px;padding:2px;cursor:pointer;text-align:center}
+.tile.sel{border-color:#ffd43b}
+.thumb{width:100%;aspect-ratio:9/16;object-fit:cover;border-radius:8px;background:#eaf1fa;display:block}
+#resultModal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:50;place-items:center}
+.modal-card{background:#fff;border-radius:16px;padding:16px;max-width:92vw}
+#video{max-height:70vh;max-width:100%;display:block;margin:0 auto 10px;border-radius:10px}
+.dl{display:inline-block;background:#4389e8;color:#fff;padding:10px 16px;border-radius:10px;text-decoration:none;font-weight:750}
+@media(max-width:900px){
+.editor{display:flex;flex-direction:column;height:auto}
+.center{order:1}.timeline-panel{order:2;height:300px;flex:none}.side{order:3;max-height:none}
+.stage{height:62vh;flex:none}
 .tab-btn{flex:1;padding:10px 8px}
-.topbar{align-items:flex-start}
-body{padding:12px}
-.scene{grid-template-columns:82px minmax(0,1fr);gap:10px;padding:10px}
-.scene-preview{width:82px}
-.panel{padding:14px}
 }
 </style>
 </head>
@@ -92,21 +114,15 @@ body{padding:12px}
 <div class="topbar">
 <div class="brand">
 <div class="brand-mark">▶</div>
-<div>
-<h1 style="margin:0">SHORTS MAKER</h1>
-<div class="small">영상 제작 스튜디오 · 사라진 시간들</div>
+<div><h1 style="margin:0">SHORTS MAKER</h1><div class="small">영상 제작 스튜디오 · 사라진 시간들</div></div>
 </div>
-</div>
-<div>
-<p id="user" style="margin:0 0 6px"></p>
-<button onclick="logout()">로그아웃</button>
-</div>
+<div><span id="user"></span> <button onclick="logout()">로그아웃</button></div>
 </div>
 
 <nav class="tabs">
 <button class="tab-btn" data-tab="trend" onclick="switchTab('trend')">트렌드 탐색</button>
 <button class="tab-btn active" data-tab="create" onclick="switchTab('create')">영상 제작</button>
-<button class="tab-btn" data-tab="design" onclick="switchTab('design')">디자인·설명란</button>
+<button class="tab-btn" data-tab="desc" onclick="switchTab('desc')">설명란</button>
 </nav>
 
 <!-- 트렌드 -->
@@ -142,144 +158,161 @@ body{padding:12px}
 </section>
 </section>
 
-<!-- 영상 제작 -->
+<!-- 영상 제작 (에디터) -->
 <div id="tab-create" class="tab-page active">
-<section class="panel">
-<h2>1. 영상 제목과 대본</h2>
-<div class="field">
-<label>영상 제목 (모든 장면에 공통 표시)</label>
-<input id="mainTitle" type="text" value="" placeholder="예: 사라진 배의 미스터리" oninput="drawCurrent()">
+<div class="editor">
+
+<!-- 왼쪽 -->
+<aside class="side">
+<div class="mini-tabs">
+<button class="mt active" data-l="script" onclick="leftTab('script')">대본</button>
+<button class="mt" data-l="media" onclick="leftTab('media')">미디어</button>
+<button class="mt" data-l="voice" onclick="leftTab('voice')">음성</button>
 </div>
-<textarea id="script" placeholder="숏츠 대본을 붙여넣어. 문장별로 자막을 나눠줄게."></textarea>
-<div class="grid" style="margin-top:10px">
-<div class="field"><label>문장 몇 개마다 새 이미지를 시작할까?</label><input id="perImage" type="number" min="1" max="20" value="1"></div>
-</div>
-<p class="toolbar">
+<div class="side-body">
+<div id="lt-script" class="lt active">
+<div class="field"><label>영상 제목 (모든 장면에 공통 표시)</label>
+<input id="mainTitle" type="text" placeholder="예: 사라진 배의 미스터리" oninput="drawCurrent()"></div>
+<div class="field"><label>대본</label>
+<textarea id="script" rows="9" placeholder="대본을 붙여넣고 '자막 자동 분리'를 눌러."></textarea></div>
+<div class="field"><label>문장 몇 개마다 새 이미지?</label><input id="perImage" type="number" min="1" max="20" value="1"></div>
+<div class="toolbar">
 <button class="primary" onclick="makeCaps()">자막 자동 분리</button>
 <button onclick="clearCaps()">자막 전체 삭제</button>
-</p>
-<p class="small">자막 길이는 글자 수로 자동 계산돼. 아래 자막 목록과 타임라인에서 초 단위로 바꿀 수 있어.</p>
-</section>
-
-<section class="panel">
-<h2>2. 폰트 설정</h2>
-<p class="small">폰트를 업로드하면 이 브라우저에 저장돼.</p>
-<div class="field"><label>폰트 파일 업로드</label><input id="fontUpload" type="file" accept=".ttf,.otf,.woff,.woff2"></div>
-<div class="grid">
-<div class="field"><label>큰 제목 폰트</label><select id="titleFont" onchange="drawCurrent()"><option value="Pretendard">Pretendard</option></select></div>
-<div class="field"><label>설명 자막 폰트</label><select id="captionFont" onchange="drawCurrent()"><option value="Pretendard">Pretendard</option></select></div>
 </div>
-<div id="fontList" class="font-list"></div>
-<button onclick="loadSavedFonts()">저장된 폰트 불러오기</button>
-</section>
+<p class="small">자막 길이는 글자 수로 자동 계산돼. 타임라인에서 끝을 끌어 조절해.</p>
+</div>
 
-<section class="panel">
-<h2>3. 음성 TTS (미리 듣기용)</h2>
-<p class="small">브라우저에 설치된 음성으로 읽어줘. 영상에는 소리가 들어가지 않아.</p>
+<div id="lt-media" class="lt">
+<div class="field"><label>이미지·영상 업로드 (여러 개 선택 가능)</label>
+<input id="mediaUpload" type="file" accept="image/*,video/*" multiple></div>
+<div class="field"><label>이미지 기본 길이 (초)</label><input id="duration" type="number" min="0.5" max="60" step="0.1" value="4"></div>
+<div class="toolbar">
+<button class="primary" onclick="fitMediaToCaps()">자막에 맞춰 길이 자동 맞춤</button>
+<button onclick="clearMedia()">전체 비우기</button>
+</div>
+<p class="small">올린 순서대로 타임라인에 이어 붙어. 영상은 길이가 모자라면 반복돼. 아래 썸네일을 누르면 선택돼.</p>
+<div id="mediaList"></div>
+</div>
+
+<div id="lt-voice" class="lt">
+<p class="small">미리 듣기용이야. 영상에는 소리가 들어가지 않아.</p>
 <div class="field"><label>목소리 선택</label><select id="voiceSelect"></select></div>
-<div class="grid">
 <div class="field"><label>말하기 속도 <span id="rateValue">1</span></label><input id="rate" type="range" min=".7" max="1.3" step=".05" value="1" oninput="rateValue.textContent=this.value"></div>
 <div class="field"><label>음높이 <span id="pitchValue">1</span></label><input id="pitch" type="range" min=".7" max="1.3" step=".05" value="1" oninput="pitchValue.textContent=this.value"></div>
-</div>
 <div class="toolbar">
 <button onclick="speakAll()">전체 대본 듣기</button>
 <button onclick="stopSpeech()">음성 정지</button>
 </div>
 <p id="ttsStatus" class="small"></p>
-</section>
-
-<section class="panel">
-<h2>4. 미디어 (이미지·영상)</h2>
-<p class="small">이미지와 영상 클립을 여러 개 올려. 올린 순서대로 미디어 트랙에 이어 붙어. 영상은 길이가 모자라면 반복 재생돼.</p>
-<div class="grid">
-<div class="field"><label>미디어 업로드 (여러 개 선택 가능)</label><input id="mediaUpload" type="file" accept="image/*,video/*" multiple></div>
-<div class="field"><label>이미지 기본 길이 (초)</label><input id="duration" type="number" min="0.5" max="60" step="0.1" value="4"></div>
 </div>
-<div class="toolbar">
-<button class="primary" onclick="fitMediaToCaps()">자막 묶음에 맞춰 미디어 길이 자동 맞춤</button>
-<button onclick="clearMedia()">미디어 전체 비우기</button>
 </div>
-<p class="small">자막 카드의 "여기서 새 이미지 시작"에 체크된 자막부터 다음 미디어로 넘어가는 걸로 계산해.</p>
-<div id="mediaList" style="margin-top:12px"></div>
-</section>
+</aside>
 
-<section>
-<h2>5. 자막 편집</h2>
-<p class="small">자막마다 길이(초)를 따로 정해. 이미지 1장에 자막 여러 개를 넣고 싶으면 "새 이미지 시작" 체크를 빼면 돼.</p>
-<div id="caps"></div>
-<button onclick="addCap(caps.length-1)">+ 자막 추가</button>
-</section>
-
-<section class="panel">
-<h2>6. 미리보기 · 타임라인</h2>
-<canvas id="canvas" width="720" height="1280"></canvas>
-<div class="toolbar" style="margin-top:10px">
+<!-- 가운데 -->
+<section class="center">
+<div class="stage"><canvas id="canvas" width="720" height="1280"></canvas></div>
+<div class="transport">
+<button onclick="seek(0)">⏮</button>
 <button id="playBtn" class="primary" onclick="togglePlay()">▶ 재생</button>
-<button onclick="seek(0)">⏮ 처음으로</button>
 <span id="timeLabel" class="small">0.0초 / 1.0초</span>
+<button class="primary" style="margin-left:auto" onclick="renderVideo()">🎬 영상 만들기</button>
 </div>
-<input id="seekBar" type="range" min="0" max="1" step="0.05" value="0" oninput="seek(Number(this.value))">
-<div class="tl-wrap">
-<div class="small">🖼 미디어 트랙 (파랑=이미지, 초록=영상)</div><div class="tl-row" id="tlMedia"></div>
-<div class="small">💬 자막 트랙 (노란 줄 = 새 이미지 시작)</div><div class="tl-row tl-cap" id="tlCaps"></div>
-<div id="playLine"></div>
-</div>
-<p id="tlInfo" class="small"></p>
-<p class="toolbar"><button class="primary" onclick="renderVideo()">영상 만들기</button></p>
-<p id="status">대본을 입력하고 자막을 만들어줘.</p>
-<p class="small">영상 만드는 동안엔 이 탭을 계속 켜둬야 해. (실시간으로 녹화돼)</p>
-<video id="video" controls hidden></video>
-<p><a id="download" hidden>영상 다운로드</a></p>
+<div id="status">대본을 넣고 자막을 만들어줘.</div>
 </section>
-</div>
 
-<!-- 디자인 -->
-<div id="tab-design" class="tab-page">
-<section class="panel">
-<h2>영상 디자인</h2>
-<div class="grid">
+<!-- 오른쪽 -->
+<aside class="side">
+<div class="mini-tabs">
+<button class="mt active" data-r="item" onclick="rightTab('item')">선택 항목</button>
+<button class="mt" data-r="design" onclick="rightTab('design')">디자인</button>
+</div>
+<div class="side-body">
+<div id="rt-item" class="rt active"><div id="inspector"></div></div>
+
+<div id="rt-design" class="rt">
 <div class="field"><label>영상 배경색</label><input id="backgroundColor" type="color" value="#000000"></div>
+<hr>
+<div class="field"><label>폰트 파일 업로드 (이 브라우저에 저장)</label><input id="fontUpload" type="file" accept=".ttf,.otf,.woff,.woff2"></div>
+<div id="fontList" class="font-list"></div>
+<button onclick="loadSavedFonts()">저장된 폰트 불러오기</button>
+<div class="grid2">
+<div class="field"><label>큰 제목 폰트</label><select id="titleFont"><option value="Pretendard">Pretendard</option></select></div>
+<div class="field"><label>설명 자막 폰트</label><select id="captionFont"><option value="Pretendard">Pretendard</option></select></div>
+</div>
+<hr>
 <div class="field"><label>큰 제목 글자 크기 <span id="titleSizeValue">76</span>px</label><input id="titleSize" type="range" min="30" max="110" value="76"></div>
 <div class="field"><label>설명 자막 크기 <span id="captionSizeValue">43</span>px</label><input id="captionSize" type="range" min="20" max="70" value="43"></div>
 <div class="field"><label>제목 가로 위치 <span id="titleXValue">6</span>%</label><input id="titleX" type="range" min="0" max="90" value="6"></div>
 <div class="field"><label>제목 세로 위치 <span id="titleYValue">8</span>%</label><input id="titleY" type="range" min="0" max="70" value="8"></div>
 <div class="field"><label>설명 가로 위치 <span id="captionXValue">6</span>%</label><input id="captionX" type="range" min="0" max="90" value="6"></div>
 <div class="field"><label>설명 세로 위치 <span id="captionYValue">58</span>%</label><input id="captionY" type="range" min="15" max="90" value="58"></div>
-</div>
-<p class="small">미리보기에서 제목과 자막을 끌어 위치를 바꿀 수 있어. 자막은 가로 폭에 맞춰 자동 줄바꿈돼.</p>
+<p class="small">미리보기에서 제목과 자막을 직접 끌어서 옮길 수도 있어.</p>
+<button onclick="resetLayout()">위치 기본값으로</button>
 <hr>
-<h2>디자인 세부 규격</h2>
-<p class="small">제목과 설명 자막의 모양을 각각 설정해. 저장한 프리셋은 다음 영상에도 그대로 쓸 수 있어.</p>
-<div class="grid">
-<div class="field"><label>큰 제목 글자색</label><input id="titleTextColor" type="color" value="#FFFFFF"></div>
-<div class="field"><label>큰 제목 외곽선 색</label><input id="titleStrokeColor" type="color" value="#111111"></div>
-<div class="field"><label>큰 제목 외곽선 두께</label><input id="titleStroke" type="range" min="0" max="10" value="2"></div>
-<div class="field"><label>큰 제목 그림자</label><input id="titleShadow" type="range" min="0" max="30" value="10"></div>
-<div class="field"><label>큰 제목 정렬</label><select id="titleAlign"><option value="left">왼쪽</option><option value="center">가운데</option><option value="right">오른쪽</option></select></div>
-<div class="field"><label>설명 자막 글자색</label><input id="captionTextColor" type="color" value="#FFFFFF"></div>
-<div class="field"><label>설명 자막 외곽선 색</label><input id="captionStrokeColor" type="color" value="#111111"></div>
-<div class="field"><label>설명 자막 외곽선 두께</label><input id="captionStroke" type="range" min="0" max="10" value="3"></div>
-<div class="field"><label>설명 자막 그림자</label><input id="captionShadow" type="range" min="0" max="30" value="12"></div>
-<div class="field"><label>설명 자막 정렬</label><select id="captionAlign"><option value="left">왼쪽</option><option value="center" selected>가운데</option><option value="right">오른쪽</option></select></div>
+<div class="grid2">
+<div class="field"><label>제목 글자색</label><input id="titleTextColor" type="color" value="#FFFFFF"></div>
+<div class="field"><label>제목 외곽선 색</label><input id="titleStrokeColor" type="color" value="#111111"></div>
+</div>
+<div class="field"><label>제목 외곽선 두께</label><input id="titleStroke" type="range" min="0" max="10" value="2"></div>
+<div class="field"><label>제목 그림자</label><input id="titleShadow" type="range" min="0" max="30" value="10"></div>
+<div class="field"><label>제목 정렬</label><select id="titleAlign"><option value="left">왼쪽</option><option value="center">가운데</option><option value="right">오른쪽</option></select></div>
+<div class="field"><label>제목 최대 가로 폭</label><input id="titleMaxWidth" type="range" min="50" max="96" value="88"></div>
+<hr>
+<div class="grid2">
+<div class="field"><label>자막 글자색</label><input id="captionTextColor" type="color" value="#FFFFFF"></div>
+<div class="field"><label>자막 외곽선 색</label><input id="captionStrokeColor" type="color" value="#111111"></div>
+</div>
+<div class="field"><label>자막 외곽선 두께</label><input id="captionStroke" type="range" min="0" max="10" value="3"></div>
+<div class="field"><label>자막 그림자</label><input id="captionShadow" type="range" min="0" max="30" value="12"></div>
+<div class="field"><label>자막 정렬</label><select id="captionAlign"><option value="left">왼쪽</option><option value="center" selected>가운데</option><option value="right">오른쪽</option></select></div>
 <div class="field"><label>자막 배경</label><select id="captionBox"><option value="none">없음</option><option value="solid">단색 배경</option><option value="soft">반투명 배경</option></select></div>
 <div class="field"><label>자막 배경색</label><input id="captionBoxColor" type="color" value="#111111"></div>
 <div class="field"><label>자막 배경 투명도</label><input id="captionBoxOpacity" type="range" min="10" max="100" value="72"></div>
 <div class="field"><label>자막 줄 간격</label><input id="captionLineHeight" type="range" min="100" max="180" value="135"></div>
 <div class="field"><label>자막 최대 가로 폭</label><input id="captionMaxWidth" type="range" min="50" max="96" value="88"></div>
-<div class="field"><label>제목 최대 가로 폭</label><input id="titleMaxWidth" type="range" min="50" max="96" value="88"></div>
-</div>
+<hr>
 <div class="toolbar">
-<button class="primary" onclick="saveDesignPreset()">현재 디자인 프리셋 저장</button>
+<button class="primary" onclick="saveDesignPreset()">프리셋 저장</button>
 <button onclick="saveLastSettings()">마지막 설정 저장</button>
-<select id="designPreset"><option value="">저장된 프리셋 선택</option></select>
-<button onclick="loadDesignPreset()">프리셋 적용</button>
-<button onclick="updateDesignPreset()">선택 프리셋 수정</button>
-<button onclick="deleteDesignPreset()">선택 프리셋 삭제</button>
-<button onclick="resetDesign()">디자인 초기화</button>
 </div>
-<button onclick="resetLayout()" style="margin-top:8px">위치 기본값으로</button>
+<div class="field"><select id="designPreset"><option value="">저장된 프리셋 선택</option></select></div>
+<div class="toolbar">
+<button onclick="loadDesignPreset()">적용</button>
+<button onclick="updateDesignPreset()">덮어쓰기</button>
+<button onclick="deleteDesignPreset()">삭제</button>
+<button onclick="resetDesign()">초기화</button>
+</div>
+</div>
+</div>
+</aside>
+
+<!-- 타임라인 -->
+<section class="timeline-panel">
+<div class="toolbar">
+<button onclick="splitAtPlayhead()" title="단축키 S">✂ 자르기</button>
+<button onclick="addCapAfterSel()">+ 자막</button>
+<button class="danger" onclick="deleteSelected()" title="단축키 Delete">🗑 삭제</button>
+<button onclick="fitMediaToCaps()">⚡ 자동 맞춤</button>
+<span style="margin-left:auto" class="small">확대</span>
+<button onclick="zoomBy(-10)">－</button>
+<input id="zoom" type="range" min="20" max="160" value="60" style="width:120px" oninput="setZoom(Number(this.value))">
+<button onclick="zoomBy(10)">＋</button>
+</div>
+<div class="small">Space 재생/정지 · S 자르기 · Delete 삭제 · 블록 오른쪽 끝을 끌면 길이 조절 · 노란 줄 = 새 이미지 시작</div>
+<div id="tlBox">
+<div id="tlLabels"><div class="sp"></div><div>🖼</div><div>💬</div></div>
+<div id="tlScroll">
+<div id="tlInner"><div id="tlTracks"></div><div id="playLine"></div></div>
+</div>
+</div>
 </section>
 
+</div>
+</div>
+
+<!-- 설명란 -->
+<div id="tab-desc" class="tab-page">
 <section class="panel">
 <h2>영상 설명란 템플릿</h2>
 <p class="small">영상마다 설명란의 구조를 통일해. 내용만 바꾸고 복사해서 유튜브에 붙여넣으면 돼.</p>
@@ -289,11 +322,22 @@ body{padding:12px}
 구독과 좋아요는 다음 이야기를 만드는 데 도움이 됩니다.</textarea></div>
 <div class="field"><label>해시태그</label><input id="descriptionTags" value="#사라진시간들 #역사 #미스터리 #shorts"></div>
 <button class="primary" onclick="makeDescription()">설명란 만들기</button>
-<textarea id="descriptionOutput" rows="8" placeholder="완성된 설명란이 여기에 표시돼." readonly></textarea>
-<button onclick="copyDescription()">설명란 복사</button>
+<textarea id="descriptionOutput" rows="8" placeholder="완성된 설명란이 여기에 표시돼." readonly style="margin-top:10px"></textarea>
+<button onclick="copyDescription()" style="margin-top:8px">설명란 복사</button>
 </section>
 </div>
 </main>
+
+<!-- 결과 팝업 -->
+<div id="resultModal">
+<div class="modal-card">
+<video id="video" controls></video>
+<div class="toolbar" style="justify-content:center">
+<a id="download" class="dl">영상 다운로드</a>
+<button onclick="closeResult()">닫기</button>
+</div>
+</div>
+</div>
 
 <script>
 const firebaseConfig={
@@ -325,6 +369,14 @@ function switchTab(name){
 document.querySelectorAll(".tab-page").forEach(p=>p.classList.toggle("active",p.id==="tab-"+name));
 document.querySelectorAll(".tab-btn").forEach(b=>b.classList.toggle("active",b.dataset.tab===name));
 if(name==="create")drawCurrent();
+}
+function leftTab(n){
+document.querySelectorAll(".lt").forEach(x=>x.classList.toggle("active",x.id==="lt-"+n));
+document.querySelectorAll("[data-l]").forEach(b=>b.classList.toggle("active",b.dataset.l===n));
+}
+function rightTab(n){
+document.querySelectorAll(".rt").forEach(x=>x.classList.toggle("active",x.id==="rt-"+n));
+document.querySelectorAll("[data-r]").forEach(b=>b.classList.toggle("active",b.dataset.r===n));
 }
 
 /* ===== 트렌드 ===== */
@@ -372,7 +424,9 @@ return `<div class="trend-result"><div><a href="https://www.youtube.com/watch?v=
 /* ===== 상태 ===== */
 const media=[];   // {type,el,url,name,dur,motion,size}
 const caps=[];    // {text,dur,color,newMedia,search}
+let sel={track:null,i:-1};
 let playhead=0,playing=false,playStart=0,rafId=null,recorderActive=false,uploadedFonts=[],voiceList=[];
+let pxPerSec=60,scrubbing=false,justResized=false;
 const sum=a=>a.reduce((s,x)=>s+(Number(x.dur)||0),0);
 const total=()=>Math.max(sum(media),sum(caps),1);
 function startOf(list,i){let s=0;for(let k=0;k<i;k++)s+=Number(list[k].dur)||0;return s;}
@@ -386,6 +440,7 @@ s+=d;
 if(hold&&list.length){const i=list.length-1,d=Number(list[i].dur)||0;return{item:list[i],i,start:s-d,dur:d,held:true};}
 return null;
 }
+function refreshAll(){renderTimeline();updateTimeUI();renderMediaList();renderInspector();}
 
 /* ===== 로그인 ===== */
 function loginWithGoogle(){auth.signInWithPopup(new firebase.auth.GoogleAuthProvider()).catch(e=>$("loginStatus").textContent="로그인 실패: "+e.message)}
@@ -397,7 +452,7 @@ $("app").style.display="block";
 $("user").textContent=user.email;
 loadVoices();loadSavedFonts();restoreLastSettings();refreshPresetMenu();
 if($("youtubeApiKey"))$("youtubeApiKey").value=localStorage.getItem("shortsYoutubeApiKey")||"";
-drawCurrent();
+refreshAll();drawCurrent();
 }else{
 $("app").style.display="none";$("login").style.display="block";
 if(user){await auth.signOut();$("loginStatus").textContent="관리자 계정만 로그인할 수 있어."}
@@ -470,7 +525,7 @@ const del=document.createElement("button");del.textContent="삭제";
 del.onclick=async()=>{await deleteFont(font.name);await loadSavedFonts();};
 chip.appendChild(del);$("fontList").appendChild(chip);
 });
-drawCurrent();
+restoreLastSettings();drawCurrent();
 }
 
 /* ===== TTS ===== */
@@ -501,13 +556,13 @@ speechSynthesis.speak(u);
 function speakAll(){const text=caps.map(c=>c.text).join(" ");if(!text)return alert("자막을 먼저 만들어줘.");speakText(text);}
 function stopSpeech(){if("speechSynthesis" in window)speechSynthesis.cancel();$("ttsStatus").textContent="음성 정지";}
 
-/* ===== 자막 만들기 / 편집 ===== */
+/* ===== 자막 ===== */
 function makeCaps(){
 const text=$("script").value.trim();
 if(!text)return alert("대본을 먼저 넣어줘.");
 if(caps.length&&!confirm("지금 자막을 지우고 새로 만들까?"))return;
 const n=Math.max(1,Number($("perImage").value)||1);
-caps.length=0;
+caps.length=0;sel={track:null,i:-1};
 const sentences=text.replace(/\n+/g," ").match(/[^.!?。]+[.!?。]?/g)||[];
 let k=0;
 sentences.forEach(s=>{
@@ -515,49 +570,18 @@ const t=s.trim();if(!t)return;
 caps.push({text:t,dur:Math.min(8,Math.max(1.5,r1(t.length*0.15))),color:"",newMedia:k%n===0,search:suggestImageQuery(t)});
 k++;
 });
-playhead=0;renderCaps();refreshTimeline();drawCurrent();
+playhead=0;refreshAll();drawCurrent();
 $("status").textContent=caps.length+"개 자막 생성 완료. 미디어를 올리고 '자동 맞춤'을 눌러봐.";
 }
 function clearCaps(){
 if(!confirm("모든 자막을 삭제할까?"))return;
-caps.length=0;playhead=0;renderCaps();refreshTimeline();drawCurrent();
+caps.length=0;sel={track:null,i:-1};playhead=0;refreshAll();drawCurrent();
 }
-function addCap(index){
-caps.splice(index+1,0,{text:"새 자막",dur:3,color:"",newMedia:caps.length===0,search:""});
-renderCaps();refreshTimeline();
-}
-function renderCaps(){
-const box=$("caps");box.innerHTML="";
-caps.forEach((c,i)=>{
-const ta=h("textarea",{rows:2,value:c.text,oninput:()=>{c.text=ta.value;seek(startOf(caps,i)+0.01);},onchange:()=>refreshTimeline()});
-const dur=h("input",{type:"number",min:0.5,max:60,step:0.1,value:c.dur,onchange:()=>{c.dur=Math.max(0.5,Number(dur.value)||2);dur.value=c.dur;refreshTimeline();}});
-const color=h("select",{onchange:()=>{c.color=color.value;seek(startOf(caps,i)+0.01);}});
-[["","기본 (디자인 설정)"],["#65D9E8","시안"],["#FF526B","코랄"],["#B7A7FF","라벤더"],["#FFE066","옐로"]].forEach(([v,l])=>color.append(h("option",{value:v,textContent:l})));
-color.value=c.color||"";
-const chk=h("input",{type:"checkbox",checked:!!c.newMedia,style:"width:auto;margin-right:6px",onchange:()=>{c.newMedia=chk.checked;refreshTimeline();}});
-const chkLabel=h("label",{style:"display:flex;align-items:center;font-size:13px;font-weight:800;color:#647993;margin:8px 0"},chk,"여기서 새 이미지 시작");
-const search=h("input",{value:c.search||"",placeholder:"이미지 검색어",oninput:()=>{c.search=search.value;}});
-const details=h("details",{},
-h("summary",{textContent:"이미지 검색 도우미",style:"cursor:pointer;font-size:13px;color:#647993;margin:6px 0"}),
-field("이미지 검색어",search),
-h("div",{className:"toolbar"},
-h("button",{textContent:"검색어 다시 추천",onclick:()=>{c.search=suggestImageQuery(c.text);search.value=c.search;}}),
-h("button",{textContent:"구글 이미지",onclick:()=>window.open("https://www.google.com/search?tbm=isch&q="+encodeURIComponent(c.search||c.text),"_blank")}),
-h("button",{textContent:"위키미디어",onclick:()=>window.open("https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search="+encodeURIComponent(c.search||c.text),"_blank")})
-));
-const tools=h("div",{className:"toolbar",style:"margin-top:8px"},
-h("button",{textContent:"▶ 여기로 이동",onclick:()=>seek(startOf(caps,i)+0.01)}),
-h("button",{textContent:"🔊 듣기",onclick:()=>speakText(c.text)}),
-h("button",{textContent:"+ 아래에 추가",onclick:()=>addCap(i)}),
-h("button",{textContent:"삭제",className:"danger",onclick:()=>{caps.splice(i,1);renderCaps();refreshTimeline();drawCurrent();}})
-);
-const editor=h("div",{className:"scene-editor",style:"grid-column:1/-1"},
-h("div",{className:"small",textContent:`자막 ${i+1} · ${fmt(startOf(caps,i))} ~ ${fmt(startOf(caps,i)+c.dur)}`}),
-field("자막 내용",ta),
-h("div",{className:"grid"},field("길이 (초)",dur),field("글자색",color)),
-chkLabel,details,tools);
-box.append(h("div",{className:"scene",style:"grid-template-columns:1fr"},editor));
-});
+function addCapAfterSel(){
+const at=sel.track==="cap"?sel.i+1:caps.length;
+caps.splice(at,0,{text:"새 자막",dur:3,color:"",newMedia:caps.length===0,search:""});
+select("cap",at);
+setTimeout(()=>{const t=$("inspText");if(t){t.focus();t.select();}},50);
 }
 
 /* ===== 미디어 ===== */
@@ -565,7 +589,7 @@ $("mediaUpload").addEventListener("change",async e=>{
 const files=[...e.target.files];
 for(const f of files)await addMedia(f);
 e.target.value="";
-renderMedia();refreshTimeline();drawCurrent();
+refreshAll();drawCurrent();
 });
 function addMedia(file){
 return new Promise(res=>{
@@ -589,49 +613,21 @@ img.src=url;
 function removeMedia(i){
 const it=media[i];if(it.type==="video")it.el.pause();
 URL.revokeObjectURL(it.url);media.splice(i,1);
-renderMedia();refreshTimeline();drawCurrent();
-}
-function moveMedia(i,d){
-const j=i+d;if(j<0||j>=media.length)return;
-[media[i],media[j]]=[media[j],media[i]];
-renderMedia();refreshTimeline();drawCurrent();
+sel={track:null,i:-1};refreshAll();drawCurrent();
 }
 function clearMedia(){
 if(!media.length)return;
 if(!confirm("모든 미디어를 비울까?"))return;
 media.forEach(m=>{if(m.type==="video")m.el.pause();URL.revokeObjectURL(m.url);});
-media.length=0;renderMedia();refreshTimeline();drawCurrent();
+media.length=0;sel={track:null,i:-1};refreshAll();drawCurrent();
 }
-function renderMedia(){
+function renderMediaList(){
 const box=$("mediaList");box.innerHTML="";
 media.forEach((it,i)=>{
-const thumb=it.type==="video"?h("video",{className:"scene-preview",src:it.url,muted:true,preload:"metadata"}):h("img",{className:"scene-preview",src:it.url});
-const dur=h("input",{type:"number",min:0.5,max:120,step:0.1,value:it.dur,onchange:()=>{it.dur=Math.max(0.5,Number(dur.value)||4);dur.value=it.dur;refreshTimeline();}});
-const motion=h("select",{onchange:()=>{it.motion=motion.value;seek(startOf(media,i)+0.01);}});
-[["zoomIn","천천히 줌 인"],["zoomOut","천천히 줌 아웃"],["leftToRight","왼쪽 → 오른쪽"],["rightToLeft","오른쪽 → 왼쪽"],["upToDown","위 → 아래"],["downToUp","아래 → 위"],["zoomPan","줌 인 + 이동"],["none","움직임 없음"]].forEach(([v,l])=>motion.append(h("option",{value:v,textContent:l})));
-motion.value=it.motion||"none";
-const size=h("div",{className:"size-picker"});
-[["S","작게"],["M","보통"],["L","크게"]].forEach(([v,l])=>{
-const b=h("button",{type:"button",textContent:v,title:l,className:it.size===v?"selected":"",onclick:()=>{
-it.size=v;size.querySelectorAll("button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");seek(startOf(media,i)+0.01);
-}});
-size.append(b);
-});
-const tools=h("div",{className:"toolbar",style:"margin-top:8px"},
-h("button",{textContent:"▶ 여기로 이동",onclick:()=>seek(startOf(media,i)+0.01)}),
-h("button",{textContent:"◀",title:"앞으로",onclick:()=>moveMedia(i,-1)}),
-h("button",{textContent:"▶",title:"뒤로",onclick:()=>moveMedia(i,1)}),
-h("button",{textContent:"삭제",className:"danger",onclick:()=>removeMedia(i)})
-);
-const editor=h("div",{className:"scene-editor"},
-h("div",{className:"small",textContent:`미디어 ${i+1} · ${it.type==="video"?"영상":"이미지"} · ${it.name} · ${fmt(startOf(media,i))} ~ ${fmt(startOf(media,i)+it.dur)}`}),
-h("div",{className:"scene-tools"},field("길이 (초)",dur),field("움직임",motion),field("크기 (자동 맞춤)",size)),
-tools);
-box.append(h("div",{className:"scene"},thumb,editor));
+const th=it.type==="video"?h("video",{src:it.url,muted:true,preload:"metadata",className:"thumb"}):h("img",{src:it.url,className:"thumb"});
+box.append(h("div",{className:"tile"+(sel.track==="media"&&sel.i===i?" sel":""),onclick:()=>select("media",i)},th,h("div",{className:"small",textContent:`${i+1}. ${fmt(it.dur)}`})));
 });
 }
-
-/* 자막 묶음 기준으로 미디어 길이 자동 맞춤 */
 function fitMediaToCaps(){
 if(!caps.length||!media.length)return alert("자막과 미디어가 둘 다 있어야 해.");
 const g=[];
@@ -641,32 +637,196 @@ if(i>=g.length)return;
 const v=i===media.length-1?g.slice(i).reduce((a,b)=>a+b,0):g[i];
 m.dur=r1(v);
 });
-renderMedia();refreshTimeline();drawCurrent();
+refreshAll();drawCurrent();
 $("status").textContent=`자막 묶음 ${g.length}개 · 미디어 ${media.length}개로 맞췄어.`+(g.length>media.length?" (이미지가 모자라서 마지막 이미지가 이어서 쓰여.)":"");
 }
 
-/* ===== 타임라인 UI ===== */
+/* ===== 선택 / 자르기 / 삭제 / 이동 ===== */
+function showItem(list,i){
+const s=startOf(list,i),d=Number(list[i].dur)||0;
+if(playhead<s||playhead>=s+d)seek(s+0.01);else drawCurrent();
+}
+function select(track,i){
+sel={track,i};
+refreshAll();rightTab("item");
+showItem(track==="cap"?caps:media,i);
+}
+function deleteSelected(){
+if(sel.track==="cap"&&caps[sel.i]){caps.splice(sel.i,1);sel={track:null,i:-1};refreshAll();drawCurrent();}
+else if(sel.track==="media"&&media[sel.i]){removeMedia(sel.i);}
+}
+function moveSel(d){
+const list=sel.track==="cap"?caps:media,j=sel.i+d;
+if(!list[sel.i]||j<0||j>=list.length)return;
+[list[sel.i],list[j]]=[list[j],list[sel.i]];
+sel.i=j;refreshAll();drawCurrent();
+}
+function splitAtPlayhead(){
+let track=sel.track;
+if(!track)track=locate(caps,playhead,false)?"cap":"media";
+if(track==="cap"){
+const m=locate(caps,playhead,false);
+if(!m)return alert("자막 위에 재생헤드를 놓고 눌러줘.");
+const off=playhead-m.start;
+if(off<0.3||m.dur-off<0.3)return alert("조금 더 안쪽에서 잘라줘.");
+const c=m.item;
+let idx=Math.round(c.text.length*off/m.dur),best=-1,bd=99;
+for(let k=0;k<c.text.length;k++){
+if(c.text[k]===" "&&Math.abs(k-idx)<bd&&Math.abs(k-idx)<=8){best=k;bd=Math.abs(k-idx);}
+}
+if(best>0)idx=best;
+const a=c.text.slice(0,idx).trim()||c.text,b=c.text.slice(idx).trim()||c.text;
+const nc={...c,text:b,dur:r1(m.dur-off),newMedia:false};
+c.text=a;c.dur=r1(off);
+caps.splice(m.i+1,0,nc);
+sel={track:"cap",i:m.i};refreshAll();drawCurrent();
+}else{
+const m=locate(media,playhead,false);
+if(!m)return alert("미디어 위에 재생헤드를 놓고 눌러줘.");
+if(m.item.type==="video")return alert("영상 클립은 자르기를 지원하지 않아.");
+const off=playhead-m.start;
+if(off<0.3||m.dur-off<0.3)return alert("조금 더 안쪽에서 잘라줘.");
+const nc={...m.item,dur:r1(m.dur-off)};
+m.item.dur=r1(off);
+media.splice(m.i+1,0,nc);
+sel={track:"media",i:m.i};refreshAll();drawCurrent();
+}
+}
+
+/* ===== 오른쪽: 선택 항목 편집 ===== */
+function renderInspector(){
+const box=$("inspector");box.innerHTML="";
+if(sel.track==="cap"&&caps[sel.i]){
+const i=sel.i,c=caps[i],st=startOf(caps,i);
+const ta=h("textarea",{id:"inspText",rows:4,value:c.text,oninput:()=>{c.text=ta.value;renderTimeline();showItem(caps,i);}});
+const dur=h("input",{type:"number",min:0.5,max:60,step:0.1,value:c.dur,onchange:()=>{c.dur=Math.max(0.5,Number(dur.value)||2);refreshAll();}});
+const color=h("select",{onchange:()=>{c.color=color.value;showItem(caps,i);}});
+[["","기본 (디자인 설정)"],["#65D9E8","시안"],["#FF526B","코랄"],["#B7A7FF","라벤더"],["#FFE066","옐로"]].forEach(([v,l])=>color.append(h("option",{value:v,textContent:l})));
+color.value=c.color||"";
+const chk=h("input",{type:"checkbox",checked:!!c.newMedia,style:"width:auto;margin-right:6px",onchange:()=>{c.newMedia=chk.checked;renderTimeline();}});
+const chkLabel=h("label",{style:"display:flex;align-items:center;font-size:13px;font-weight:800;color:#647993;margin:8px 0"},chk,"여기서 새 이미지 시작");
+const search=h("input",{value:c.search||"",placeholder:"이미지 검색어",oninput:()=>{c.search=search.value;}});
+const details=h("details",{},
+h("summary",{textContent:"이미지 검색 도우미",style:"cursor:pointer;font-size:13px;color:#647993;margin:8px 0"}),
+field("이미지 검색어",search),
+h("div",{className:"toolbar"},
+h("button",{textContent:"검색어 추천",onclick:()=>{c.search=suggestImageQuery(c.text);search.value=c.search;}}),
+h("button",{textContent:"구글 이미지",onclick:()=>window.open("https://www.google.com/search?tbm=isch&q="+encodeURIComponent(c.search||c.text),"_blank")}),
+h("button",{textContent:"위키미디어",onclick:()=>window.open("https://commons.wikimedia.org/wiki/Special:MediaSearch?type=image&search="+encodeURIComponent(c.search||c.text),"_blank")})
+));
+box.append(
+h("div",{className:"small",textContent:`자막 ${i+1} · ${fmt(st)} ~ ${fmt(st+c.dur)}`}),
+field("자막 내용",ta),
+h("div",{className:"grid2"},field("길이 (초)",dur),field("글자색",color)),
+chkLabel,
+h("div",{className:"toolbar"},
+h("button",{textContent:"🔊 듣기",onclick:()=>speakText(c.text)}),
+h("button",{textContent:"◀",title:"앞으로",onclick:()=>moveSel(-1)}),
+h("button",{textContent:"▶",title:"뒤로",onclick:()=>moveSel(1)}),
+h("button",{textContent:"삭제",className:"danger",onclick:deleteSelected})),
+details);
+}else if(sel.track==="media"&&media[sel.i]){
+const i=sel.i,it=media[i],st=startOf(media,i);
+const dur=h("input",{type:"number",min:0.5,max:120,step:0.1,value:it.dur,onchange:()=>{it.dur=Math.max(0.5,Number(dur.value)||4);refreshAll();}});
+const motion=h("select",{onchange:()=>{it.motion=motion.value;showItem(media,i);}});
+[["zoomIn","천천히 줌 인"],["zoomOut","천천히 줌 아웃"],["leftToRight","왼쪽 → 오른쪽"],["rightToLeft","오른쪽 → 왼쪽"],["upToDown","위 → 아래"],["downToUp","아래 → 위"],["zoomPan","줌 인 + 이동"],["none","움직임 없음"]].forEach(([v,l])=>motion.append(h("option",{value:v,textContent:l})));
+motion.value=it.motion||"none";
+const size=h("div",{className:"size-picker"});
+[["S","작게"],["M","보통"],["L","크게"]].forEach(([v,l])=>{
+const b=h("button",{type:"button",textContent:v,title:l,className:it.size===v?"selected":"",onclick:()=>{
+it.size=v;size.querySelectorAll("button").forEach(x=>x.classList.remove("selected"));b.classList.add("selected");showItem(media,i);
+}});
+size.append(b);
+});
+box.append(
+h("div",{className:"small",textContent:`${it.type==="video"?"영상":"이미지"} ${i+1} · ${it.name} · ${fmt(st)} ~ ${fmt(st+it.dur)}`}),
+field("길이 (초)",dur),
+field("움직임",motion),
+field("크기 (자동 맞춤)",size),
+it.type==="video"?h("p",{className:"small",textContent:"영상은 길이가 모자라면 반복 재생돼. 소리는 들어가지 않아."}):h("span"),
+h("div",{className:"toolbar"},
+h("button",{textContent:"◀",title:"앞으로",onclick:()=>moveSel(-1)}),
+h("button",{textContent:"▶",title:"뒤로",onclick:()=>moveSel(1)}),
+h("button",{textContent:"삭제",className:"danger",onclick:deleteSelected})));
+}else{
+box.append(
+h("p",{className:"small",textContent:"아래 타임라인에서 자막이나 이미지 블록을 클릭하면 여기서 수정할 수 있어."}),
+h("p",{className:"small",textContent:"이미지 1장에 자막 여러 개를 넣고 싶으면 이미지 블록을 길게 늘리거나, 자막의 '새 이미지 시작' 체크를 빼고 ⚡ 자동 맞춤을 눌러."}));
+}
+}
+
+/* ===== 타임라인 ===== */
+function setZoom(v){pxPerSec=Math.max(20,Math.min(160,v));$("zoom").value=pxPerSec;renderTimeline();updateTimeUI();}
+function zoomBy(d){setZoom(pxPerSec+d);}
 function renderTimeline(){
-const T=total();
-const build=(list,labelFn,cls)=>list.map((x,i)=>{
-const d=Number(x.dur)||0,start=startOf(list,i);
-const extra=cls==="cap"&&x.newMedia?" new":(cls==="media"&&x.type==="video"?" video":"");
-return `<div class="tl-seg${extra}" style="width:${d/T*100}%" title="${escapeHtml(labelFn(x,i))} (${fmt(d)})" onclick="seek(${start+0.001})">${escapeHtml(labelFn(x,i))}</div>`;
-}).join("");
-$("tlMedia").innerHTML=build(media,(x,i)=>`${i+1}. ${x.name}`,"media");
-$("tlCaps").innerHTML=build(caps,(x,i)=>`${i+1}. ${x.text}`,"cap");
-const sm=sum(media),sc=sum(caps);
-let info=`미디어 ${fmt(sm)} · 자막 ${fmt(sc)} · 영상 전체 ${fmt(T)}`;
-if(Math.abs(sm-sc)>0.15&&media.length&&caps.length)info+=" — 두 트랙 길이가 달라. 미디어가 짧으면 마지막 장면이 유지돼. '자동 맞춤'을 눌러봐.";
-$("tlInfo").textContent=info;
+const T=total(),pps=pxPerSec;
+const W=Math.max((T+3)*pps,$("tlScroll").clientWidth);
+$("tlInner").style.width=W+"px";
+const step=pps>=60?1:(pps>=30?2:5);
+let html='<div class="ruler">';
+for(let s=0;s<=Math.ceil(T)+3;s+=step)html+=`<div class="tick" style="left:${s*pps}px">${s}s</div>`;
+html+='</div>';
+html+='<div class="trackrow">'+media.map((it,i)=>{
+const s=startOf(media,i),d=Number(it.dur)||0;
+const bg=it.type==="image"?`background-image:url('${it.url}');`:"";
+const cls="seg media"+(it.type==="video"?" video":"")+(sel.track==="media"&&sel.i===i?" sel":"");
+return `<div class="${cls}" data-track="media" data-i="${i}" style="left:${s*pps}px;width:${d*pps}px;${bg}"><span class="lbl">${i+1}. ${escapeHtml(it.name)}</span><div class="handle"></div></div>`;
+}).join("")+'</div>';
+html+='<div class="trackrow">'+caps.map((c,i)=>{
+const s=startOf(caps,i),d=Number(c.dur)||0;
+const cls="seg cap"+(c.newMedia?" new":"")+(sel.track==="cap"&&sel.i===i?" sel":"");
+return `<div class="${cls}" data-track="cap" data-i="${i}" style="left:${s*pps}px;width:${d*pps}px"><span class="lbl">${i+1}. ${escapeHtml(c.text)}</span><div class="handle"></div></div>`;
+}).join("")+'</div>';
+$("tlTracks").innerHTML=html;
 }
 function updateTimeUI(){
 const T=total();
-$("seekBar").max=T;$("seekBar").value=playhead;
 $("timeLabel").textContent=fmt(playhead)+" / "+fmt(T);
-$("playLine").style.left=(playhead/T*100)+"%";
+const x=playhead*pxPerSec;
+$("playLine").style.left=x+"px";
+if(playing){
+const sc=$("tlScroll");
+if(x>sc.scrollLeft+sc.clientWidth-40||x<sc.scrollLeft)sc.scrollLeft=Math.max(0,x-60);
 }
-function refreshTimeline(){renderTimeline();updateTimeUI();}
+}
+function scrubTo(e){
+const rect=$("tlInner").getBoundingClientRect();
+seek((e.clientX-rect.left)/pxPerSec);
+}
+$("tlInner").addEventListener("pointerdown",e=>{
+const hd=e.target.closest(".handle");
+if(hd){startResize(e,hd);return;}
+if(e.target.closest(".seg"))return;
+scrubbing=true;$("tlInner").setPointerCapture(e.pointerId);scrubTo(e);
+});
+$("tlInner").addEventListener("pointermove",e=>{if(scrubbing)scrubTo(e);});
+$("tlInner").addEventListener("pointerup",()=>{scrubbing=false;});
+$("tlInner").addEventListener("click",e=>{
+const s=e.target.closest(".seg");
+if(!s||justResized)return;
+select(s.dataset.track,Number(s.dataset.i));
+});
+function startResize(e,hd){
+e.preventDefault();e.stopPropagation();
+const seg=hd.parentElement,track=seg.dataset.track,i=Number(seg.dataset.i);
+const list=track==="cap"?caps:media,it=list[i];
+const x0=e.clientX,d0=Number(it.dur)||1;
+hd.setPointerCapture(e.pointerId);
+const mv=ev=>{
+it.dur=Math.max(0.5,r1(d0+(ev.clientX-x0)/pxPerSec));
+seg.parentElement.querySelectorAll(".seg").forEach(s2=>{
+const k=Number(s2.dataset.i);
+s2.style.left=startOf(list,k)*pxPerSec+"px";
+s2.style.width=(Number(list[k].dur)||0)*pxPerSec+"px";
+});
+};
+const up=()=>{
+hd.removeEventListener("pointermove",mv);hd.removeEventListener("pointerup",up);
+justResized=true;setTimeout(()=>{justResized=false;},60);
+sel={track,i};refreshAll();rightTab("item");
+};
+hd.addEventListener("pointermove",mv);hd.addEventListener("pointerup",up);
+}
 
 /* ===== 재생 ===== */
 function togglePlay(){
@@ -745,7 +905,6 @@ return {x:left,y,w:blockW,h:blockH};
 }
 function dimsOf(el){return [el.videoWidth||el.naturalWidth||el.width,el.videoHeight||el.naturalHeight||el.height];}
 
-/* 영상 클립 재생 위치 맞추기 */
 function syncVideos(m,t,live){
 media.forEach(it=>{
 if(it.type!=="video")return;
@@ -810,9 +969,6 @@ canvas.dataset.captionX=cb.x;canvas.dataset.captionY=cb.y;canvas.dataset.caption
 }else{
 canvas.dataset.captionX=-9999;canvas.dataset.captionY=-9999;canvas.dataset.captionW=0;canvas.dataset.captionH=0;
 }
-
-ctx.save();ctx.fillStyle="rgba(255,255,255,.75)";ctx.font="500 22px Pretendard,sans-serif";ctx.textAlign="left";
-ctx.fillText(`${t.toFixed(1)} / ${total().toFixed(1)}s`,45,1210);ctx.restore();
 }
 
 /* ===== 미리보기 드래그 ===== */
@@ -835,7 +991,8 @@ const p=draggingText;
 const xv=Math.max(0,Math.min(90,Math.round((x-dragOffsetX)/720*100)));
 const yv=Math.max(0,Math.min(90,Math.round((y-dragOffsetY)/1280*100)));
 $(p+"X").value=xv;$(p+"Y").value=yv;
-$(p+"XValue").textContent=xv;$(p+"YValue").textContent=yv;drawCurrent();
+syncDesignLabels();drawCurrent();
+try{localStorage.setItem("shortsLastSettings",JSON.stringify(getDesignValues()));}catch(err){}
 });
 $("canvas").addEventListener("pointerup",()=>draggingText=null);
 $("canvas").addEventListener("pointercancel",()=>draggingText=null);
@@ -937,6 +1094,7 @@ catch(e){$("descriptionOutput").select();document.execCommand("copy");alert("설
 }
 
 /* ===== 영상 출력 (무음 WebM) ===== */
+function closeResult(){$("resultModal").style.display="none";$("video").pause();}
 async function renderVideo(){
 if(recorderActive)return;
 if(!media.length)return alert("이미지나 영상을 하나 이상 올려줘.");
@@ -944,7 +1102,6 @@ if(!window.MediaRecorder)return alert("이 브라우저는 영상 녹화를 지�
 if(playing)pausePlay();
 stopSpeech();recorderActive=true;
 $("status").textContent="준비 중...";
-$("video").hidden=true;$("download").hidden=true;
 try{
 await document.fonts.ready;
 const canvas=$("canvas"),stream=canvas.captureStream(30),T=total();
@@ -952,7 +1109,6 @@ const mime=["video/webm;codecs=vp9","video/webm"].find(m=>MediaRecorder.isTypeSu
 const rec=new MediaRecorder(stream,{mimeType:mime,videoBitsPerSecond:8000000}),chunks=[];
 rec.ondataavailable=e=>{if(e.data.size)chunks.push(e.data);};
 const stopped=new Promise(r=>rec.onstop=r);
-// 첫 장면 준비 (영상 클립 첫 프레임 로딩 대기)
 drawAt(0,false);
 await new Promise(r=>setTimeout(r,350));
 drawAt(0,false);
@@ -963,7 +1119,7 @@ const f=now=>{
 const t=(now-st)/1000;
 if(t>=T){resolve();return;}
 drawAt(t,true);
-$("status").textContent=`영상 제작 중 ${t.toFixed(1)} / ${T.toFixed(1)}초`;
+$("status").textContent=`영상 제작 중 ${t.toFixed(1)} / ${T.toFixed(1)}초 (이 탭을 켜둬줘)`;
 requestAnimationFrame(f);
 };
 requestAnimationFrame(f);
@@ -975,9 +1131,9 @@ stream.getTracks().forEach(t=>t.stop());
 media.forEach(it=>{if(it.type==="video")it.el.pause();});
 const blob=new Blob(chunks,{type:"video/webm"}),url=URL.createObjectURL(blob);
 const name=($("mainTitle").value.trim()||"shorts").replace(/[\\/:*?"<>|]/g,"_");
-$("video").src=url;$("video").hidden=false;
+$("video").src=url;
 $("download").href=url;$("download").download=name+".webm";
-$("download").hidden=false;$("download").textContent="영상 다운로드";
+$("resultModal").style.display="grid";
 $("status").textContent="영상 제작 완료! (무음 WebM)";
 }catch(e){
 $("status").textContent="오류: "+e.message;
@@ -986,8 +1142,20 @@ recorderActive=false;drawAt(playhead,false);
 }
 }
 
+/* ===== 단축키 ===== */
+document.addEventListener("click",e=>{if(e.target.tagName==="BUTTON")e.target.blur();});
+document.addEventListener("keydown",e=>{
+if($("app").style.display==="none")return;
+if(!$("tab-create").classList.contains("active"))return;
+const tg=e.target.tagName;
+if(["INPUT","TEXTAREA","SELECT"].includes(tg))return;
+if(e.code==="Space"){e.preventDefault();togglePlay();}
+else if(e.key==="Delete"||e.key==="Backspace"){e.preventDefault();deleteSelected();}
+else if(e.key==="s"||e.key==="S"){splitAtPlayhead();}
+});
+
 /* 초기 화면 */
-refreshTimeline();drawCurrent();
+refreshAll();drawCurrent();
 </script>
 </body>
 </html>
